@@ -63,8 +63,8 @@ targetCompatibility = 1.8
 
 
 def lombokVersion = "1.18.8"
-def protobufVersion = "3.5.1"
-def grpcVersion = "1.11.0"
+def protobufVersion = "3.7.1"
+def grpcVersion = "1.18.0"
 
 
 lombok {
