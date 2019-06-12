@@ -22,7 +22,7 @@ buildscript {
         // Google Protocol Buffers (https://github.com/google/protobuf-gradle-plugin)
         classpath group: 'com.google.protobuf', name: 'protobuf-gradle-plugin', version: '0.8.6'
         // Lombok (https://github.com/franzbecker/gradle-lombok)
-        classpath group: 'io.franzbecker', name: 'gradle-lombok', version: '1.14'
+        classpath group: 'io.franzbecker', name: 'gradle-lombok', version: '3.1.0'
     }
 }
 
@@ -59,7 +59,7 @@ tasks.withType(JavaCompile) {
 
 
 
-def lombokVersion = '1.16.18'
+def lombokVersion = '1.18.8'
 def protobufVersion = "3.5.1"
 def grpcVersion = "1.11.0"
 
