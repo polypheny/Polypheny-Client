@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<chronos>
+    <evaluation system="polyphenydb">
+        <setup create_schema="false" populate="false" output_folder_path="output/" input_folder_path="input"/>
+        <dbms host="10.34.58.105" port="5432"/>
+        <parameters workers="2" worker_url="localhost,10.34.58.68" measurement_time="1"/>
+        <options accessmethod="ACCESSJDBC" scenario="SCENARIOYCSB" system="SYSTEMPOSTGRESQL" netdata_measurements="system.cpu,system.load" ycsb_properties_path="ycsb_postgres.properties"/>
+    </evaluation>
+    <analysis/>
+</chronos>

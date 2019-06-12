@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chronos>
+    <setup/>
+    <evaluation system="polyphenydb">
+        <dbms host="127.0.0.1" port="5432"/>
+        <parameters workers="3" worker_url="localhost,13.5.6.123:3444,10.30.24.10"/>
+        <options accessmethod="jdbc" scenario="tpc-c" system="postgresql" tpcc_warehouses="1"/>
+    </evaluation>
+</chronos>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<chronos>
+    <evaluation system="polyphenydb">
+        <setup create_schema="false" populate="false" output_folder_path="output/" input_folder_path="input"/>
+        <dbms host="localhost" port="5432" database="polypheny" username="polypheny" password="polypheny"/>
+        <parameters workers="1" worker_url="localhost" measurement_time="1"/>
+        <options accessmethod="ACCESSJDBC" scenario="SCENARIOTPCH" system="SYSTEMPOSTGRESQL" tpch_scalefactor="1" netdata_measurements="system.cpu,system.load"/>
+    </evaluation>
+</chronos>

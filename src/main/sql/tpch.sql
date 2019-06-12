@@ -1,0 +1,162 @@
+/**
+ The TPC-H Schema
+
+ Page 18 / 19: The use of constraints is optional and
+ limited to primary key, foreign key, check, and not null constraints.
+ */
+
+
+/**
+ * See Page 14 / 15
+ * SF * 200_000 tcph_parts are populated
+ */
+DROP TABLE IF EXISTS tpch_part CASCADE;
+CREATE TABLE tpch_part (
+  P_PARTKEY     INTEGER NOT NULL CHECK (P_PARTKEY >= 0),
+  P_NAME        VARCHAR(55) NOT NULL,
+  P_MFGR        CHAR(25) NOT NULL,
+  P_BRAND       CHAR(10) NOT NULL,
+  P_TYPE        VARCHAR(25) NOT NULL,
+  P_SIZE        INTEGER NOT NULL CHECK (P_SIZE >= 0),
+  P_CONTAINER   CHAR(10) NOT NULL,
+  P_RETAILPRICE DECIMAL(15, 2) NOT NULL CHECK (P_RETAILPRICE >= 0),
+  P_COMMENT     VARCHAR(33) NOT NULL,
+  PRIMARY KEY (P_PARTKEY)
+);
+
+/**
+ * See Page 17
+ * 5 regions are populated
+ */
+DROP TABLE IF EXISTS tpch_region CASCADE;
+CREATE TABLE tpch_region (
+  R_REGIONKEY     INTEGER NOT NULL CHECK (R_REGIONKEY >= 0),
+  R_NAME          CHAR(25) NOT NULL,
+  R_COMMENT       VARCHAR(152) NOT NULL,
+  PRIMARY KEY (R_REGIONKEY)
+);
+
+
+/**
+ * See Page 17
+ * 25 nations are populated
+ */
+DROP TABLE IF EXISTS tpch_nation CASCADE;
+CREATE TABLE tpch_nation (
+  N_NATIONKEY     INTEGER NOT NULL CHECK (N_NATIONKEY >= 0),
+  N_NAME          CHAR(25) NOT NULL,
+  N_REGIONKEY     INTEGER NOT NULL,
+  N_COMMENT       VARCHAR(152) NOT NULL,
+  PRIMARY KEY (N_NATIONKEY),
+  FOREIGN KEY (N_REGIONKEY) REFERENCES tpch_region(R_REGIONKEY)
+);
+
+
+/**
+ * See Page 15
+ * SF * 10_000 tpch_suppliers are populated
+ */
+DROP TABLE IF EXISTS tpch_supplier CASCADE;
+CREATE TABLE tpch_supplier (
+  S_SUPPKEY   INTEGER NOT NULL CHECK (S_SUPPKEY >= 0),
+  S_NAME      CHAR(25) NOT NULL,
+  S_ADDRESS   VARCHAR(40) NOT NULL,
+  S_NATIONKEY INTEGER NOT NULL,
+  S_PHONE     CHAR(15) NOT NULL,
+  S_ACCTBAL   DECIMAL(15, 2) NOT NULL,
+  S_COMMENT   VARCHAR(101) NOT NULL,
+  PRIMARY KEY (S_SUPPKEY),
+  FOREIGN KEY (S_NATIONKEY) REFERENCES tpch_nation(N_NATIONKEY)
+);
+
+
+/**
+ * See Page 15
+ * SF * 800_000 tcph_partsupps are populated
+ */
+DROP TABLE IF EXISTS tpch_partsupp CASCADE;
+CREATE TABLE tpch_partsupp (
+  PS_PARTKEY    INTEGER NOT NULL CHECK (PS_PARTKEY >= 0),
+  PS_SUPPKEY    INTEGER NOT NULL,
+  PS_AVAILQTY   INTEGER NOT NULL CHECK (PS_AVAILQTY >= 0),
+  PS_SUPPLYCOST DECIMAL(15, 2) NOT NULL CHECK (PS_SUPPLYCOST >= 0),
+  PS_COMMENT    VARCHAR(199) NOT NULL,
+  PRIMARY KEY (PS_PARTKEY, PS_SUPPKEY),
+  FOREIGN KEY (PS_PARTKEY) REFERENCES tpch_part(P_PARTKEY),
+  FOREIGN KEY (PS_SUPPKEY) REFERENCES tpch_supplier(S_SUPPKEY)
+);
+
+
+/**
+ * See Page 15 / 16
+ * SF * 150_000 tpch_customers are populated
+ */
+DROP TABLE IF EXISTS tpch_customer CASCADE;
+CREATE TABLE tpch_customer (
+  C_CUSTKEY     INTEGER NOT NULL CHECK (C_CUSTKEY >= 0),
+  C_NAME        VARCHAR(25) NOT NULL,
+  C_ADDRESS     VARCHAR(40) NOT NULL,
+  C_NATIONKEY   INTEGER NOT NULL,
+  C_PHONE       CHAR(15) NOT NULL,
+  C_ACCTBAL     DECIMAL(15, 2) NOT NULL,
+  C_MKTSEGMENT  CHAR(10) NOT NULL,
+  C_COMMENT     VARCHAR(117) NOT NULL,
+  PRIMARY KEY (C_CUSTKEY),
+  FOREIGN KEY (C_NATIONKEY) REFERENCES tpch_nation(N_NATIONKEY)
+);
+
+
+/**
+ * See Page 16
+ * SF * 1_500_000 are sparsely populated
+ *
+ * Comment: Orders are not present for all customers. In fact, one-third
+ * of the customers do not have any order in the database. The orders are
+ * assigned at random to two-thirds of the customers (see Clause 4: ). The
+ * purpose of this is to exercise the capabilities of the DBMS to handle
+ * "dead data" when joining two or more tables.
+ */
+DROP TABLE IF EXISTS tpch_orders CASCADE;
+CREATE TABLE tpch_orders (
+  O_ORDERKEY      INTEGER NOT NULL,
+  O_CUSTKEY       INTEGER NOT NULL,
+  O_ORDERSTATUS   CHAR(1) NOT NULL,
+  O_TOTALPRICE    DECIMAL(15, 2) NOT NULL CHECK (O_TOTALPRICE >= 0),
+  O_ORDERDATE     DATE NOT NULL,
+  O_ORDERPRIORITY CHAR(15) NOT NULL,
+  O_CLERK         CHAR(15) NOT NULL,
+  O_SHIPPRIORITY  INTEGER NOT NULL,
+  O_COMMENT       VARCHAR(79) NOT NULL,
+  PRIMARY KEY (O_ORDERKEY),
+  FOREIGN KEY (O_CUSTKEY) REFERENCES tpch_customer(C_CUSTKEY)
+);
+
+
+/**
+ * See Page 16 / 17
+ * SF * 6_000_000 are populated
+ */
+DROP TABLE IF EXISTS tpch_lineitem CASCADE;
+CREATE TABLE tpch_lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,
+	L_PARTKEY		    INTEGER NOT NULL,
+	L_SUPPKEY		    INTEGER NOT NULL,
+	L_LINENUMBER	  INTEGER NOT NULL,
+	L_QUANTITY		  DECIMAL(15, 2) NOT NULL CHECK (L_QUANTITY >= 0),
+	L_EXTENDEDPRICE DECIMAL(15, 2) NOT NULL CHECK (L_EXTENDEDPRICE >= 0),
+	L_DISCOUNT		  DECIMAL(15, 2) NOT NULL CHECK (L_DISCOUNT >= 0 AND L_DISCOUNT <= 1),
+	L_TAX			      DECIMAL(15, 2) NOT NULL CHECK (L_TAX >= 0),
+	L_RETURNFLAG	  CHAR(1) NOT NULL,
+	L_LINESTATUS	  CHAR(1) NOT NULL,
+	L_SHIPDATE		  DATE NOT NULL CHECK (L_SHIPDATE <= L_RECEIPTDATE),
+	L_COMMITDATE	  DATE NOT NULL,
+	L_RECEIPTDATE	  DATE NOT NULL,
+	L_SHIPINSTRUCT	CHAR(25) NOT NULL,
+	L_SHIPMODE		  CHAR(10) NOT NULL,
+	L_COMMENT		    VARCHAR(44) NOT NULL,
+	PRIMARY KEY (L_ORDERKEY, L_LINENUMBER),
+	FOREIGN KEY (L_ORDERKEY) REFERENCES tpch_orders(O_ORDERKEY) ON DELETE CASCADE,
+	FOREIGN KEY (L_PARTKEY) REFERENCES tpch_part(P_PARTKEY),
+	FOREIGN KEY (L_SUPPKEY) REFERENCES tpch_supplier(S_SUPPKEY),
+	FOREIGN KEY (L_PARTKEY, L_SUPPKEY) REFERENCES tpch_partsupp(PS_PARTKEY, PS_SUPPKEY)
+);

@@ -1,0 +1,302 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2017 Databases and Information Systems Research Group, University of Basel, Switzerland
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package ch.unibas.dmi.dbis.polyphenydb.client.main;
+
+
+import com.github.rvesse.airline.annotations.Arguments;
+import com.github.rvesse.airline.annotations.Command;
+import com.github.rvesse.airline.annotations.Option;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Properties;
+import java.util.Scanner;
+import lombok.val;
+import org.apache.commons.lang3.time.StopWatch;
+import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+/**
+ *
+ */
+@Command(name = "console", description = "Opens a console to query a Polypheny-DB instance.")
+public class ConsoleCommand extends AbstractCommand {
+
+
+    private static Logger log;
+
+    @Arguments(title = { "hostname" }, description = "Polypheny-DB hostname or IP address")
+    private String hostname = "localhost";
+
+    @Option(title = "Username", name = { "-u", "--username" })
+    private String username = "pa";
+
+
+    public void run() {
+        System.setProperty( "logFilename", "console" );
+        org.apache.logging.log4j.core.LoggerContext ctx = (org.apache.logging.log4j.core.LoggerContext) LogManager.getContext( false );
+        log = LoggerFactory.getLogger( ConsoleCommand.class );
+        val stopWatch = new StopWatch();
+
+        final PrintWriter writer;
+        final Scanner reader;
+        val c = System.console();
+        if ( c == null ) {
+            reader = new Scanner( System.in );
+            writer = new PrintWriter( System.out );
+            if ( verbose ) {
+                writer.println( "*** Using System.out ***" );
+            }
+        } else {
+            reader = new Scanner( c.reader() );
+            writer = new PrintWriter( c.writer() );
+            if ( verbose ) {
+                writer.println( "*** Using System.console() ***" );
+            }
+        }
+
+        try {
+            //Class.forName( "ch.unibas.dmi.dbis.polyphenydb.jdbc.Driver" );
+            Class.forName( "org.apache.calcite.avatica.remote.Driver" );
+        } catch ( ClassNotFoundException e ) {
+            if ( log.isErrorEnabled() ) {
+                log.error( "Could not load Polypheny-DB's driver", e );
+            }
+            writer.println( "Driver not found. Terminating ..." );
+            return;
+        }
+
+        final Properties connectionProperties = new Properties();
+        connectionProperties.setProperty( "user", "pa" );
+        //connectionProperties.setProperty( "password", "" );
+        //final String url = "jdbc:polypheny://" + hostname + "/";+
+        final String url = "jdbc:avatica:remote:url=http://localhost:20591;serialization=protobuf";
+        try ( final Connection connection = DriverManager.getConnection( url, connectionProperties ) ) {
+
+            try ( final Statement statement = connection.createStatement() ) {
+
+                String line = "";
+
+                writer.print( "> " );
+                writer.flush();
+
+                mainCommandLoop:
+                while ( (line = reader.nextLine()) != null ) {
+                    if ( line.isEmpty() ) {
+                        writer.print( "> " );
+                        writer.flush();
+                        continue;
+                    }
+
+                    if ( line.equalsIgnoreCase( "exit" ) ) {
+                        break;
+                    } else if ( line.toLowerCase().startsWith( "set" ) || line.toLowerCase().startsWith( "get" ) ) {
+                        if ( line.toLowerCase().startsWith( "get fetchsize" ) || line.toLowerCase().startsWith( "get fetch size" ) ) {
+                            writer.println( "FetchSize = " + statement.getFetchSize() );
+                        } else if ( line.toLowerCase().startsWith( "set fetchsize" ) || line.toLowerCase().startsWith( "set fetch size" ) ) {
+                            if ( line.contains( "=" ) ) {
+                                statement.setFetchSize( Integer.parseInt( line.substring( line.indexOf( '=' ) + 1 ).trim() ) );
+                                writer.println( "FetchSize is now: " + statement.getFetchSize() );
+                            } else {
+                                writer.println( "Missing '='" );
+                            }
+                        } else if ( line.toLowerCase().startsWith( "get autocommit" ) || line.toLowerCase().startsWith( "get auto commit" ) ) {
+                            writer.println( "AutoCommit = " + connection.getAutoCommit() );
+                        } else if ( line.toLowerCase().startsWith( "set autocommit" ) || line.toLowerCase().startsWith( "set auto commit" ) ) {
+                            if ( line.contains( "=" ) ) {
+                                connection.setAutoCommit( Boolean.parseBoolean( line.substring( line.indexOf( '=' ) + 1 ).trim() ) );
+                                writer.println( "AutoCommit is now: " + connection.getAutoCommit() );
+                            } else {
+                                writer.println( "Missing '='" );
+                            }
+                        }
+                    } else if ( line.startsWith( "!" ) ) {
+                        if(line.toLowerCase().startsWith( "!tables" )) {
+                            ResultSet rs = connection.getMetaData().getTables(null, null, "%", null);
+                            writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
+                            rs.close();
+                        }
+                    } else if ( line.toLowerCase().startsWith( "add to batch : " ) ) {
+                        final String sql = line.substring( line.indexOf( ':' ) + 1 ).trim();
+                        statement.addBatch( sql );
+                    } else if ( line.toLowerCase().startsWith( "execute batch" ) ) {
+                        stopWatch.start();
+                        final int[] result = statement.executeBatch();
+                        stopWatch.stop();
+                        writer.println( "NUMBER OF ROWS AFFECTED: " + Arrays.toString( result ) );
+                    } else {
+                        try {
+
+                            stopWatch.start();
+                            if ( statement.execute( line ) ) {
+                                stopWatch.stop();
+                                final ResultSet rs = statement.getResultSet();
+
+                                writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
+                                rs.close();
+                            } else {
+                                stopWatch.stop();
+                                writer.println( "NUMBER OF ROWS AFFECTED: " + statement.getUpdateCount() );
+                            }
+
+
+                        } catch ( SQLException ex ) {
+                            if ( log.isInfoEnabled() ) {
+                                log.info( "", ex );
+                            }
+                        }
+                    }
+
+                    writer.println( "* [CLIENT] Total execution time: " + stopWatch );
+                    stopWatch.reset();
+
+                    writer.print( "> " );
+                    writer.flush();
+                }
+            }
+        } catch ( Throwable t ) {
+            if ( log.isErrorEnabled() ) {
+                log.error( "Uncaught Throwable.", t );
+            }
+        }
+    }
+
+
+    public static final int DEFAULT_MAX_ROWS = 25;
+    public static final int DEFAULT_MAX_DATA_LENGTH = 25;
+    private static final String CROP_STRING = "[...]";
+    private static final String NULL_STRING = "NULL";
+    private static final String BINARY_STRING = "BINARY";
+
+
+    public static String processResultSet( ResultSet rs, int maxRows, int maxLength ) {
+        StringBuilder sb = new StringBuilder();
+
+        try {
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int totalColumns = rsmd.getColumnCount();
+            Column[] columns = new Column[totalColumns];
+
+            // get labels
+            for ( int i = 0; i < totalColumns; i++ ) {
+                columns[i] = new Column();
+                columns[i].addData( rsmd.getColumnLabel( i + 1 ), maxLength );
+            }
+
+            // get Data
+            int totalPrintRows = 0;
+            int totalRows = 0;
+            while ( rs.next() ) {
+                totalRows++;
+                if ( totalPrintRows < maxRows ) {
+                    totalPrintRows++;
+                    for ( int columnIndex = 0; columnIndex < totalColumns; columnIndex++ ) {
+                        final String stringValue = rs.getString( columnIndex + 1 );
+
+                        switch ( rsmd.getColumnType( columnIndex + 1 ) ) {
+                            case Types.BINARY:
+                            case Types.VARBINARY:
+                            case Types.LONGVARBINARY:
+                            case Types.BLOB:
+                                columns[columnIndex].addData( BINARY_STRING, maxLength );
+                                break;
+
+                            default:
+                                columns[columnIndex].addData( stringValue == null ? NULL_STRING : stringValue, maxLength );
+                                break;
+                        }
+                    }
+                }
+            }
+
+            // build table
+            String horizontalLine = getHorizontalLine( columns );
+            for ( int rowIndex = 0; rowIndex <= totalPrintRows; rowIndex++ ) {
+                sb.append( horizontalLine );
+                for ( int columnIndex = 0; columnIndex < totalColumns; columnIndex++ ) {
+                    String line = columns[columnIndex].getData( rowIndex );
+                    sb.append( String.format( "| %" + columns[columnIndex].maxLength + "s ", line ) );
+                }
+                sb.append( "|\n" );
+            }
+            sb.append( horizontalLine );
+            sb.append( "Printed " + totalPrintRows + " rows out of " + totalRows + " rows\n" );
+        } catch ( SQLException e ) {
+            if ( log.isErrorEnabled() ) {
+                log.error( "", e );
+            }
+        }
+
+        return sb.toString();
+    }
+
+
+    private static String getHorizontalLine( Column[] columns ) {
+        StringBuilder sb = new StringBuilder();
+
+        for ( Column column : columns ) {
+            sb.append( "+" );
+            for ( int j = 0; j < column.maxLength + 2; j++ ) {
+                sb.append( "-" );
+            }
+        }
+        sb.append( "+\n" );
+
+        return sb.toString();
+    }
+
+
+    private static class Column {
+
+        private int maxLength = 0;
+        private ArrayList<String> data = new ArrayList<>();
+
+
+        void addData( String dataStr, int maxLength ) {
+            if ( dataStr.length() > maxLength ) {
+                dataStr = dataStr.substring( 0, maxLength );
+                dataStr += CROP_STRING;
+            }
+            if ( this.maxLength < dataStr.length() ) {
+                this.maxLength = dataStr.length();
+            }
+            data.add( dataStr );
+        }
+
+
+        private String getData( int row ) {
+            return data.get( row );
+        }
+    }
+}

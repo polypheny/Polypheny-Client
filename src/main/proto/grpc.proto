@@ -1,0 +1,350 @@
+syntax = "proto3";
+
+option java_package = "ch.unibas.dmi.dbis.polyphenydb.client.grpc";
+
+option java_outer_classname = "PolyClientGRPC";
+
+//****  SERVICES ****//
+
+/**
+ * Service for the ClientWorkerImpl which runs queries on the dbms
+ */
+service ClientWorker {
+    //We split launching and fetching results in two phases
+    //In this way, the master is not overloaded with result-handling at querytime
+    rpc LaunchWorker (LaunchWorkerMessage) returns (AckMessage) {
+    }
+
+    rpc StopWorker (StopWorkerMessage) returns (AckMessage) {
+    }
+
+    rpc FetchResults (FetchResultsMessage) returns (stream ResultMessage) {
+    }
+
+    rpc MonitorWorker (MonitorWorkerMessage) returns (AckMessage) {
+    }
+    rpc FetchMonitorResults (FetchMonitorWorkerMessage) returns (stream WorkerMonitorResult) {
+    }
+
+    rpc ProgressReport (ProgressRequestMessage) returns (ProgressMessage) {
+    }
+}
+
+////////////////////////////////////////////////////////////////
+// ENUMS. Be aware that enum namespace in proto is global
+////////////////////////////////////////////////////////////////
+
+/**
+ * Method through which the client accesses the DB
+ */
+enum AccessMethod {
+    ACCESSUNDEFINED = 0;
+    ACCESSJDBC = 1;
+    ACCESSREST = 2;
+    ACCESSPROTO = 3;
+
+    ACCESS_POSTGRESQL = 4;
+    ACCESS_MARIADB = 5;
+    ACCESS_VOLTDB = 6;
+    ACCESS_MONETDB = 7;
+}
+
+enum DBMSSystem {
+    SYSTEMUNDEFINED = 0;
+    SYSTEMPOSTGRESQL = 1;
+    SYSTEMPOLYPHENY = 2;
+    SYSTEMICARUS = 3;
+}
+
+enum TPCCTransactionType {
+    TPCCTRANSACTIONUNDEFINED = 0;
+    TPCCTRANSACTIONNEWORDER = 1;
+    TPCCTRANSACTIONPAYMENT = 2;
+    TPCCTRANSACTIONORDERSTATUS = 3;
+    TPCCTRANSACTIONDELIVERY = 4;
+    TPCCTRANSACTIONSTOCK = 5;
+}
+
+enum TPCHTransactionType {
+    TPCHTRANSACTIONUNDEFINED = 0;
+    TPCHTRANSACTIONPRICINGSUMMARYREPORT = 1;
+    TPCHTRANSACTIONMINIMUMCOSTSUPPLIER = 2;
+    TPCHTRANSCATIONSHIPPINGPRIORITY = 3;
+    TPCHTRANSACTIONORDERPRIORITYCHECKING = 4;
+    TPCHTRANSACTIONLOCALSUPPLIERCOLUME = 5;
+    TPCHTRANSACTIONFORECASTINGREVENUECHANGE = 6;
+    TPCHTRANSACTIONVOLUMESHIPPING = 7;
+    TPCHTRANSACTIONNATIONALMARETSHARE = 8;
+    TPCHTRANSACTIONPRODUCTTYPEPROFITMEASURE = 9;
+    TPCHTRANSACTIONRETURNEDITEMREPORTING = 10;
+    TPCHTRANSACTIONIMPORTANTSTOCKIDENTIFICATION = 11;
+    TPCHTRANSACTIONSHIPPINGMODESANDORDERPRIORITY = 12;
+    TPCHTRANSACTIONCUSTOMERDISTRIBUTION = 13;
+    TPCHTRANSACTIONPROMOTIONEFFECT = 14;
+    TPCHTRANSACTIONTOPSUPPLIER = 15;
+    TPCHTRANSACTIONPARTSSUPPLIERRELATIONSHIP = 16;
+    TPCHTRANSACTIONSMALLQUANTITYORDERREVENUE = 17;
+    TPCHTRANSACTIONLARGEVOLUMECUSTOMER = 18;
+    TPCHTRANSACTIONDISCOUNTEDREVENUE = 19;
+    TPCHTRANSACTIONPOTENTIALPARTPROMOTION = 20;
+    TPCHTRANSACTIONSUPPLIERSWHOKEPTORDERSWAITING = 21;
+    TPCHTRANSACTIONGLOBALSALESOPPORTUNITY = 22;
+    // Refresh Functions
+    TPCHTRANSACTIONNEWSALES = 23;
+    TPCHTRANSACTIONOLDSALES = 24;
+}
+
+enum MusqleTransactionType {
+    MUSQLE_TRANSACTION_UNDEFINED = 0;
+    MUSQLE_TRANSACTION_Q01 = 1;
+    MUSQLE_TRANSACTION_Q02 = 2;
+    MUSQLE_TRANSACTION_Q03 = 3;
+    MUSQLE_TRANSACTION_Q04 = 4;
+    MUSQLE_TRANSACTION_Q05 = 5;
+    MUSQLE_TRANSACTION_Q06 = 6;
+    MUSQLE_TRANSACTION_Q07 = 7;
+    MUSQLE_TRANSACTION_Q08 = 8;
+    MUSQLE_TRANSACTION_Q09 = 9;
+    MUSQLE_TRANSACTION_Q10 = 10;
+    MUSQLE_TRANSACTION_Q11 = 11;
+    MUSQLE_TRANSACTION_Q12 = 12;
+    MUSQLE_TRANSACTION_Q13 = 13;
+    MUSQLE_TRANSACTION_Q14 = 14;
+    MUSQLE_TRANSACTION_Q15 = 15;
+    MUSQLE_TRANSACTION_Q16 = 16;
+    MUSQLE_TRANSACTION_Q17 = 17;
+    MUSQLE_TRANSACTION_Q18 = 18;
+}
+
+enum Scenario {
+    SCENARIOUNDEFINED = 0;
+    SCENARIOTPCC = 1;
+    SCENARIOTPCH = 2;
+    SCENARIOYCSB = 3;
+    SCENARIOMUSQLE = 5;
+}
+
+////////////////////////////////////////////////////////////////
+// Messages
+////////////////////////////////////////////////////////////////
+/**
+ * General
+ */
+message Pair {
+    int32 lower = 10;
+    int32 upper = 20;
+}
+
+message DBInfo {
+    DBMSSystem system = 10;
+    AccessMethod accessMethod = 20;
+    string dbHost = 30;
+    int32 dbPort = 40;
+    string database = 50;
+    string username = 60;
+    string password = 70;
+}
+
+message LaunchWorkerMessage {
+    DBInfo dbInfo = 10;
+    Scenario scenario = 20;
+    oneof scenarioInfo {
+        TPCCWorkerMessage tpccWorkerMessage = 30;
+        TPCHWorkerMessage tpchWorkerMessage = 40;
+        YCSBWorkerMessage ycsbWorkerMessage = 50;
+        MUSQLEWorkerMessage musqleWorkerMessage = 70;
+    }
+}
+
+message StopWorkerMessage {
+    Scenario scenario = 10;
+}
+
+message FetchResultsMessage {
+    int64 startTime = 10;
+    int64 stopTime = 20;
+    Scenario scenario = 30;
+    oneof scenarioInfo {
+        FetchTPCCResultsMessage fetchTpccMessage = 40;
+        FetchTPCHResultsMessage fetchTpchMessage = 50;
+        FetchYCSBResultsMessage fetchYcsbMessage = 60;
+        FetchMUSQLEResultsMessage fetchMusqleMessage = 80;
+    }
+}
+
+message ResultMessage {
+    oneof ScenarioResult {
+        TPCCResultMessage tpccResultMessage = 10;
+        TPCHResultMessage tpchResultMessage = 20;
+        YCSBResultMessage ycsbResultMessage = 30;
+        MUSQLEResultMessage musqleResultMessage = 50;
+    }
+}
+
+/**
+ * TPC-C, TPCC
+ */
+message TPCCWorkerMessage {
+    int32 NUMBER_OF_CONFIGURED_WAREHOUSES = 10;
+    Pair warehouses = 20;
+    int32 terminalPerDistrict = 30;
+    //According to 2.1.6 all terminals must use the same value
+    int32 CC_LAST = 40;
+    int32 CC_ID = 50;
+    int32 COL_I_ID = 60;
+    bool TPCC_TERMINAL_THINK = 70;
+    oneof thinkMode {
+        int64 constantSleep = 80;
+        Pair uniformSleep = 90;
+    }
+}
+
+message TPCCResultMessage {
+    repeated TPCCResultTuple results = 10;
+}
+
+message FetchTPCCResultsMessage {
+
+}
+
+message TPCCResultTuple {
+    int32 queryID = 10;
+    TPCCTransactionType transactionType = 20;
+    float responseTime = 30;
+    bool aborted = 40;
+    int64 startTimestamp = 50;
+    repeated TPCCQueryTuple queries = 60;
+}
+
+enum QueryType {
+    QUERYTYPEDEFAULT = 0;
+    QUERYTYPEINSERT = 1;
+    QUERYTYPESELECT = 2;
+    QUERYTYPEUPDATE = 3;
+    QUERYTYPEDELETE = 4;
+}
+
+message TPCCQueryTuple {
+    string query = 10;
+    int64 executionTime = 20;
+    QueryType queryType = 30;
+}
+
+/**
+ * YCSB
+ */
+message YCSBWorkerMessage {
+    map<string, string> properties = 10;
+}
+
+message YCSBResultMessage {
+    repeated YCSBResultTuple results = 10;
+}
+
+message FetchYCSBResultsMessage {
+
+}
+
+message YCSBResultTuple {
+    string metricName = 10;
+    string measurementName = 20;
+    double measurement = 30;
+}
+
+/**
+ * TPC-H, TPCH
+ */
+message TPCHWorkerMessage {
+    int32 streams = 10;
+    bool executeRefreshStream = 20;
+    double SCALE_FACTOR = 30;
+}
+
+message TPCHResultMessage {
+    repeated TPCHResultTuple results = 10;
+}
+
+message FetchTPCHResultsMessage {
+
+}
+
+message TPCHResultTuple {
+    int32 queryID = 10;
+    TPCHTransactionType transactionType = 20;
+    float responseTime = 30;
+    bool aborted = 40;
+    int64 startTimestamp = 50;
+    string query = 60;
+}
+
+
+message ProgressRequestMessage {
+    Scenario scenario = 10;
+}
+
+message ProgressMessage {
+    bool isFinished = 10;
+    int32 executedQueries = 20;
+}
+
+/**
+ * MuSQLE
+ */
+message MUSQLEWorkerMessage {
+    int32 streams = 10;
+    double SCALE_FACTOR = 20;
+}
+
+message MUSQLEResultMessage {
+    repeated MUSQLEResultTuple results = 10;
+}
+
+message FetchMUSQLEResultsMessage {
+
+}
+
+message MUSQLEResultTuple {
+    int32 queryID = 10;
+    MusqleTransactionType transactionType = 20;
+    float responseTime = 30;
+    bool aborted = 40;
+    int64 startTimestamp = 50;
+    string query = 60;
+}
+
+/**
+ * Measuring Machine-load
+ */
+message MonitorWorkerMessage {
+    string url = 10;
+    repeated string options = 20;
+}
+
+message FetchMonitorWorkerMessage {
+    string url = 10;
+    int64 startTime = 20;
+    int64 stopTime = 30;
+}
+
+message NetdataMeasurement {
+    int64 timestamp = 10;
+    string type = 20;
+    map<string, string> measurements = 30;
+}
+
+message WorkerMonitorResult {
+    repeated NetdataMeasurement measurements = 20;
+}
+
+//******* DEBUG MESSAGES **************//
+message AckMessage {
+    enum Code {
+        ERROR = 0;
+        OK = 1;
+    }
+    Code code = 1;
+    string message = 2;
+}
+
+message EmptyMessage {
+}
