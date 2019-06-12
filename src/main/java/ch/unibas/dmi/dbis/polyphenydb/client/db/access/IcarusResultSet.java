@@ -2636,12 +2636,10 @@ public class IcarusResultSet implements ResultSet {
      *
      * @param columnLabel the label for the column specified with the SQL AS clause.  If the SQL AS clause was not specified, then the label is the name of the column
      * @return a <code>java.io.Reader</code> object that contains the column value; if the value is SQL <code>NULL</code>, the value returned is <code>null</code> in the Java programming language
-     * @throws SQLException if the columnLabel is not valid; if a database access error occurs or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public Reader getNCharacterStream( String columnLabel ) throws SQLException {
+    public Reader getNCharacterStream( String columnLabel ) {
         throw new UnsupportedOperationException();
     }
 
@@ -2654,12 +2652,10 @@ public class IcarusResultSet implements ResultSet {
      * @param columnIndex the first column is 1, the second is 2, ...
      * @param x the new column value
      * @param length the length of the stream
-     * @throws SQLException if the columnIndex is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateNCharacterStream( int columnIndex, Reader x, long length ) throws SQLException {
+    public void updateNCharacterStream( int columnIndex, Reader x, long length ) {
         throw new UnsupportedOperationException();
 
     }
@@ -2673,12 +2669,10 @@ public class IcarusResultSet implements ResultSet {
      * @param columnLabel the label for the column specified with the SQL AS clause.  If the SQL AS clause was not specified, then the label is the name of the column
      * @param reader the <code>java.io.Reader</code> object containing the new column value
      * @param length the length of the stream
-     * @throws SQLException if the columnLabel is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateNCharacterStream( String columnLabel, Reader reader, long length ) throws SQLException {
+    public void updateNCharacterStream( String columnLabel, Reader reader, long length ) {
         throw new UnsupportedOperationException();
 
     }
@@ -2691,12 +2685,10 @@ public class IcarusResultSet implements ResultSet {
      * @param columnIndex the first column is 1, the second is 2, ...
      * @param x the new column value
      * @param length the length of the stream
-     * @throws SQLException if the columnIndex is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateAsciiStream( int columnIndex, InputStream x, long length ) throws SQLException {
+    public void updateAsciiStream( int columnIndex, InputStream x, long length ) {
         throw new UnsupportedOperationException();
 
     }
@@ -2709,12 +2701,10 @@ public class IcarusResultSet implements ResultSet {
      * @param columnIndex the first column is 1, the second is 2, ...
      * @param x the new column value
      * @param length the length of the stream
-     * @throws SQLException if the columnIndex is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateBinaryStream( int columnIndex, InputStream x, long length ) throws SQLException {
+    public void updateBinaryStream( int columnIndex, InputStream x, long length ) {
         throw new UnsupportedOperationException();
 
     }
@@ -2727,12 +2717,10 @@ public class IcarusResultSet implements ResultSet {
      * @param columnIndex the first column is 1, the second is 2, ...
      * @param x the new column value
      * @param length the length of the stream
-     * @throws SQLException if the columnIndex is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateCharacterStream( int columnIndex, Reader x, long length ) throws SQLException {
+    public void updateCharacterStream( int columnIndex, Reader x, long length ) {
         throw new UnsupportedOperationException();
 
     }
@@ -2745,12 +2733,10 @@ public class IcarusResultSet implements ResultSet {
      * @param columnLabel the label for the column specified with the SQL AS clause.  If the SQL AS clause was not specified, then the label is the name of the column
      * @param x the new column value
      * @param length the length of the stream
-     * @throws SQLException if the columnLabel is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateAsciiStream( String columnLabel, InputStream x, long length ) throws SQLException {
+    public void updateAsciiStream( String columnLabel, InputStream x, long length ) {
         throw new UnsupportedOperationException();
 
     }
@@ -2763,12 +2749,10 @@ public class IcarusResultSet implements ResultSet {
      * @param columnLabel the label for the column specified with the SQL AS clause.  If the SQL AS clause was not specified, then the label is the name of the column
      * @param x the new column value
      * @param length the length of the stream
-     * @throws SQLException if the columnLabel is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateBinaryStream( String columnLabel, InputStream x, long length ) throws SQLException {
+    public void updateBinaryStream( String columnLabel, InputStream x, long length ) {
         throw new UnsupportedOperationException();
 
     }
@@ -2781,12 +2765,10 @@ public class IcarusResultSet implements ResultSet {
      * @param columnLabel the label for the column specified with the SQL AS clause.  If the SQL AS clause was not specified, then the label is the name of the column
      * @param reader the <code>java.io.Reader</code> object containing the new column value
      * @param length the length of the stream
-     * @throws SQLException if the columnLabel is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateCharacterStream( String columnLabel, Reader reader, long length ) throws SQLException {
+    public void updateCharacterStream( String columnLabel, Reader reader, long length ) {
         throw new UnsupportedOperationException();
 
     }
@@ -2800,12 +2782,10 @@ public class IcarusResultSet implements ResultSet {
      * @param columnIndex the first column is 1, the second is 2, ...
      * @param inputStream An object that contains the data to set the parameter value to.
      * @param length the number of bytes in the parameter data.
-     * @throws SQLException if the columnIndex is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateBlob( int columnIndex, InputStream inputStream, long length ) throws SQLException {
+    public void updateBlob( int columnIndex, InputStream inputStream, long length ) {
         throw new UnsupportedOperationException();
 
     }
@@ -2819,12 +2799,10 @@ public class IcarusResultSet implements ResultSet {
      * @param columnLabel the label for the column specified with the SQL AS clause.  If the SQL AS clause was not specified, then the label is the name of the column
      * @param inputStream An object that contains the data to set the parameter value to.
      * @param length the number of bytes in the parameter data.
-     * @throws SQLException if the columnLabel is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateBlob( String columnLabel, InputStream inputStream, long length ) throws SQLException {
+    public void updateBlob( String columnLabel, InputStream inputStream, long length ) {
         throw new UnsupportedOperationException();
 
     }
@@ -2839,12 +2817,10 @@ public class IcarusResultSet implements ResultSet {
      * @param columnIndex the first column is 1, the second is 2, ...
      * @param reader An object that contains the data to set the parameter value to.
      * @param length the number of characters in the parameter data.
-     * @throws SQLException if the columnIndex is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateClob( int columnIndex, Reader reader, long length ) throws SQLException {
+    public void updateClob( int columnIndex, Reader reader, long length ) {
         throw new UnsupportedOperationException();
 
     }
@@ -2859,12 +2835,10 @@ public class IcarusResultSet implements ResultSet {
      * @param columnLabel the label for the column specified with the SQL AS clause.  If the SQL AS clause was not specified, then the label is the name of the column
      * @param reader An object that contains the data to set the parameter value to.
      * @param length the number of characters in the parameter data.
-     * @throws SQLException if the columnLabel is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateClob( String columnLabel, Reader reader, long length ) throws SQLException {
+    public void updateClob( String columnLabel, Reader reader, long length ) {
         throw new UnsupportedOperationException();
 
     }
@@ -2879,13 +2853,10 @@ public class IcarusResultSet implements ResultSet {
      * @param columnIndex the first column is 1, the second 2, ...
      * @param reader An object that contains the data to set the parameter value to.
      * @param length the number of characters in the parameter data.
-     * @throws SQLException if the columnIndex is not valid; if the driver does not support national character sets;  if the driver can detect that a data conversion error could occur; this method is called on a closed result set, if a database access error occurs or the result set concurrency is
-     * <code>CONCUR_READ_ONLY</code>
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateNClob( int columnIndex, Reader reader, long length ) throws SQLException {
+    public void updateNClob( int columnIndex, Reader reader, long length ) {
         throw new UnsupportedOperationException();
 
     }
@@ -2900,13 +2871,10 @@ public class IcarusResultSet implements ResultSet {
      * @param columnLabel the label for the column specified with the SQL AS clause.  If the SQL AS clause was not specified, then the label is the name of the column
      * @param reader An object that contains the data to set the parameter value to.
      * @param length the number of characters in the parameter data.
-     * @throws SQLException if the columnLabel is not valid; if the driver does not support national character sets;  if the driver can detect that a data conversion error could occur; this method is called on a closed result set; if a database access error occurs or the result set concurrency is
-     * <code>CONCUR_READ_ONLY</code>
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateNClob( String columnLabel, Reader reader, long length ) throws SQLException {
+    public void updateNClob( String columnLabel, Reader reader, long length ) {
         throw new UnsupportedOperationException();
 
     }
@@ -2921,12 +2889,10 @@ public class IcarusResultSet implements ResultSet {
      *
      * @param columnIndex the first column is 1, the second is 2, ...
      * @param x the new column value
-     * @throws SQLException if the columnIndex is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateNCharacterStream( int columnIndex, Reader x ) throws SQLException {
+    public void updateNCharacterStream( int columnIndex, Reader x ) {
         throw new UnsupportedOperationException();
 
     }
@@ -2941,12 +2907,10 @@ public class IcarusResultSet implements ResultSet {
      *
      * @param columnLabel the label for the column specified with the SQL AS clause.  If the SQL AS clause was not specified, then the label is the name of the column
      * @param reader the <code>java.io.Reader</code> object containing the new column value
-     * @throws SQLException if the columnLabel is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateNCharacterStream( String columnLabel, Reader reader ) throws SQLException {
+    public void updateNCharacterStream( String columnLabel, Reader reader ) {
         throw new UnsupportedOperationException();
 
     }
@@ -2960,12 +2924,10 @@ public class IcarusResultSet implements ResultSet {
      *
      * @param columnIndex the first column is 1, the second is 2, ...
      * @param x the new column value
-     * @throws SQLException if the columnIndex is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateAsciiStream( int columnIndex, InputStream x ) throws SQLException {
+    public void updateAsciiStream( int columnIndex, InputStream x ) {
         throw new UnsupportedOperationException();
 
     }
@@ -2979,12 +2941,10 @@ public class IcarusResultSet implements ResultSet {
      *
      * @param columnIndex the first column is 1, the second is 2, ...
      * @param x the new column value
-     * @throws SQLException if the columnIndex is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateBinaryStream( int columnIndex, InputStream x ) throws SQLException {
+    public void updateBinaryStream( int columnIndex, InputStream x ) {
         throw new UnsupportedOperationException();
 
     }
@@ -2998,12 +2958,10 @@ public class IcarusResultSet implements ResultSet {
      *
      * @param columnIndex the first column is 1, the second is 2, ...
      * @param x the new column value
-     * @throws SQLException if the columnIndex is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateCharacterStream( int columnIndex, Reader x ) throws SQLException {
+    public void updateCharacterStream( int columnIndex, Reader x ) {
         throw new UnsupportedOperationException();
 
     }
@@ -3017,12 +2975,10 @@ public class IcarusResultSet implements ResultSet {
      *
      * @param columnLabel the label for the column specified with the SQL AS clause.  If the SQL AS clause was not specified, then the label is the name of the column
      * @param x the new column value
-     * @throws SQLException if the columnLabel is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateAsciiStream( String columnLabel, InputStream x ) throws SQLException {
+    public void updateAsciiStream( String columnLabel, InputStream x ) {
         throw new UnsupportedOperationException();
 
     }
@@ -3036,12 +2992,10 @@ public class IcarusResultSet implements ResultSet {
      *
      * @param columnLabel the label for the column specified with the SQL AS clause.  If the SQL AS clause was not specified, then the label is the name of the column
      * @param x the new column value
-     * @throws SQLException if the columnLabel is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateBinaryStream( String columnLabel, InputStream x ) throws SQLException {
+    public void updateBinaryStream( String columnLabel, InputStream x ) {
         throw new UnsupportedOperationException();
 
     }
@@ -3055,12 +3009,10 @@ public class IcarusResultSet implements ResultSet {
      *
      * @param columnLabel the label for the column specified with the SQL AS clause.  If the SQL AS clause was not specified, then the label is the name of the column
      * @param reader the <code>java.io.Reader</code> object containing the new column value
-     * @throws SQLException if the columnLabel is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateCharacterStream( String columnLabel, Reader reader ) throws SQLException {
+    public void updateCharacterStream( String columnLabel, Reader reader ) {
         throw new UnsupportedOperationException();
 
     }
@@ -3074,12 +3026,10 @@ public class IcarusResultSet implements ResultSet {
      *
      * @param columnIndex the first column is 1, the second is 2, ...
      * @param inputStream An object that contains the data to set the parameter value to.
-     * @throws SQLException if the columnIndex is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateBlob( int columnIndex, InputStream inputStream ) throws SQLException {
+    public void updateBlob( int columnIndex, InputStream inputStream ) {
         throw new UnsupportedOperationException();
 
     }
@@ -3093,12 +3043,10 @@ public class IcarusResultSet implements ResultSet {
      *
      * @param columnLabel the label for the column specified with the SQL AS clause.  If the SQL AS clause was not specified, then the label is the name of the column
      * @param inputStream An object that contains the data to set the parameter value to.
-     * @throws SQLException if the columnLabel is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateBlob( String columnLabel, InputStream inputStream ) throws SQLException {
+    public void updateBlob( String columnLabel, InputStream inputStream ) {
         throw new UnsupportedOperationException();
 
     }
@@ -3113,12 +3061,10 @@ public class IcarusResultSet implements ResultSet {
      *
      * @param columnIndex the first column is 1, the second is 2, ...
      * @param reader An object that contains the data to set the parameter value to.
-     * @throws SQLException if the columnIndex is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateClob( int columnIndex, Reader reader ) throws SQLException {
+    public void updateClob( int columnIndex, Reader reader ) {
         throw new UnsupportedOperationException();
 
     }
@@ -3133,12 +3079,10 @@ public class IcarusResultSet implements ResultSet {
      *
      * @param columnLabel the label for the column specified with the SQL AS clause.  If the SQL AS clause was not specified, then the label is the name of the column
      * @param reader An object that contains the data to set the parameter value to.
-     * @throws SQLException if the columnLabel is not valid; if a database access error occurs; the result set concurrency is <code>CONCUR_READ_ONLY</code> or this method is called on a closed result set
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateClob( String columnLabel, Reader reader ) throws SQLException {
+    public void updateClob( String columnLabel, Reader reader ) {
         throw new UnsupportedOperationException();
 
     }
@@ -3155,13 +3099,10 @@ public class IcarusResultSet implements ResultSet {
      *
      * @param columnIndex the first column is 1, the second 2, ...
      * @param reader An object that contains the data to set the parameter value to.
-     * @throws SQLException if the columnIndex is not valid; if the driver does not support national character sets;  if the driver can detect that a data conversion error could occur; this method is called on a closed result set, if a database access error occurs or the result set concurrency is
-     * <code>CONCUR_READ_ONLY</code>
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateNClob( int columnIndex, Reader reader ) throws SQLException {
+    public void updateNClob( int columnIndex, Reader reader ) {
         throw new UnsupportedOperationException();
 
     }
@@ -3176,13 +3117,10 @@ public class IcarusResultSet implements ResultSet {
      *
      * @param columnLabel the label for the column specified with the SQL AS clause.  If the SQL AS clause was not specified, then the label is the name of the column
      * @param reader An object that contains the data to set the parameter value to.
-     * @throws SQLException if the columnLabel is not valid; if the driver does not support national character sets;  if the driver can detect that a data conversion error could occur; this method is called on a closed result set; if a database access error occurs or the result set concurrency is
-     * <code>CONCUR_READ_ONLY</code>
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.6
      */
     @Override
-    public void updateNClob( String columnLabel, Reader reader ) throws SQLException {
+    public void updateNClob( String columnLabel, Reader reader ) {
         throw new UnsupportedOperationException();
 
     }
@@ -3196,12 +3134,10 @@ public class IcarusResultSet implements ResultSet {
      * @param columnIndex the first column is 1, the second is 2, ...
      * @param type Class representing the Java data type to convert the designated column to.
      * @return an instance of {@code type} holding the column value
-     * @throws SQLException if conversion is not supported, type is null or another error occurs. The getCause() method of the exception may provide a more detailed exception, for example, if a conversion error occurs
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.7
      */
     @Override
-    public <T> T getObject( int columnIndex, Class<T> type ) throws SQLException {
+    public <T> T getObject( int columnIndex, Class<T> type ) {
         throw new UnsupportedOperationException();
     }
 
@@ -3214,12 +3150,10 @@ public class IcarusResultSet implements ResultSet {
      * @param columnLabel the label for the column specified with the SQL AS clause. If the SQL AS clause was not specified, then the label is the name of the column
      * @param type Class representing the Java data type to convert the designated column to.
      * @return an instance of {@code type} holding the column value
-     * @throws SQLException if conversion is not supported, type is null or another error occurs. The getCause() method of the exception may provide a more detailed exception, for example, if a conversion error occurs
-     * @throws SQLFeatureNotSupportedException if the JDBC driver does not support this method
      * @since 1.7
      */
     @Override
-    public <T> T getObject( String columnLabel, Class<T> type ) throws SQLException {
+    public <T> T getObject( String columnLabel, Class<T> type ) {
         throw new UnsupportedOperationException();
     }
 
@@ -3232,11 +3166,10 @@ public class IcarusResultSet implements ResultSet {
      *
      * @param iface A Class defining an interface that the result must implement.
      * @return an object that implements the interface. May be a proxy for the actual implementing object.
-     * @throws SQLException If no object found that implements the interface
      * @since 1.6
      */
     @Override
-    public <T> T unwrap( Class<T> iface ) throws SQLException {
+    public <T> T unwrap( Class<T> iface ) {
         throw new UnsupportedOperationException();
     }
 
@@ -3248,11 +3181,10 @@ public class IcarusResultSet implements ResultSet {
      *
      * @param iface a Class defining an interface.
      * @return true if this implements the interface or directly or indirectly wraps an object that does.
-     * @throws SQLException if an error occurs while determining whether this is a wrapper for an object with the given interface.
      * @since 1.6
      */
     @Override
-    public boolean isWrapperFor( Class<?> iface ) throws SQLException {
+    public boolean isWrapperFor( Class<?> iface ) {
         throw new UnsupportedOperationException();
     }
 

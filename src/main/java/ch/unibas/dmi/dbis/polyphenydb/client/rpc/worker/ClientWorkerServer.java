@@ -24,9 +24,8 @@ public class ClientWorkerServer {
 
     /**
      * @param port Port the server should listen on
-     * @throws IOException If there is an error while launching the server
      */
-    public ClientWorkerServer( int port ) throws IOException {
+    public ClientWorkerServer( int port ) {
         this( ServerBuilder.forPort( port ), port );
     }
 

@@ -18,7 +18,7 @@ import org.apache.logging.log4j.Logger;
 public class WorkerCommand extends AbstractCommand {
 
     /**
-     * Not initialized as we want to give the logfiles a specific name depending on the command which is run.
+     * Not initialized as we want to give the log files a specific name depending on the command which is run.
      */
     private Logger logger;
 

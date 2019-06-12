@@ -8,7 +8,6 @@ import ch.unibas.dmi.dbis.polyphenydb.client.storage.StreamWriter;
 import com.google.common.util.concurrent.SettableFuture;
 import com.yahoo.ycsb.measurements.exporter.MeasurementsExporter;
 import java.io.File;
-import java.io.IOException;
 import java.io.OutputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,7 +39,7 @@ public class YCSBMeasurementsExporter implements MeasurementsExporter {
 
 
     @Override
-    public void write( String metric, String measurement, int i ) throws IOException {
+    public void write( String metric, String measurement, int i ) {
         resultWriter.onNext(
                 YCSBResultTuple.newBuilder().setMetricName( metric ).setMeasurementName( measurement )
                         .setMeasurement( i ).build() );
@@ -48,7 +47,7 @@ public class YCSBMeasurementsExporter implements MeasurementsExporter {
 
 
     @Override
-    public void write( String metric, String measurement, double d ) throws IOException {
+    public void write( String metric, String measurement, double d ) {
         resultWriter.onNext(
                 YCSBResultTuple.newBuilder().setMetricName( metric ).setMeasurementName( measurement )
                         .setMeasurement( d ).build() );
@@ -56,7 +55,7 @@ public class YCSBMeasurementsExporter implements MeasurementsExporter {
 
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         resultWriter.onCompleted();
     }
 }

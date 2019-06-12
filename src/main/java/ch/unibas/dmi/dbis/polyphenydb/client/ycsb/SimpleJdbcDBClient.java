@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2010 - 2016 Yahoo! Inc., 2016 YCSB contributors. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
@@ -200,7 +200,7 @@ public class SimpleJdbcDBClient extends DB {
                 Class.forName( driver );
             }
             int shardCount = 0;
-            conns = new ArrayList<Connection>( 3 );
+            conns = new ArrayList<>( 3 );
             final String[] urlArr = urls.split( "," );
             for ( String url : urlArr ) {
                 System.out.println( "Adding shard node URL: " + url );
@@ -315,7 +315,7 @@ public class SimpleJdbcDBClient extends DB {
                 }
 
                 for ( int i = 0; i < recordcount && resultSet.next(); i++ ) {
-                    HashMap<String, ByteIterator> values = new HashMap<String, ByteIterator>();
+                    HashMap<String, ByteIterator> values = new HashMap<>();
                     if ( fields == null || fields.isEmpty() ) {
                         for ( int ci = 1; ci <= metaData.getColumnCount(); ++ci ) {
                             final String label = metaData.getColumnLabel( ci );

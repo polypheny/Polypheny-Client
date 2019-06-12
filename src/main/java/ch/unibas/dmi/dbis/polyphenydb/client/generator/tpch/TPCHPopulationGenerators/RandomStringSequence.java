@@ -1,10 +1,3 @@
-package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGenerators;
-
-/**
- * Created by manuelhuerbin on 29.04.17.
- */
-
-
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +12,9 @@ package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGener
  * limitations under the License.
  */
 
+package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGenerators;
+
+
 import static com.google.common.base.Preconditions.checkArgument;
 
 import com.google.common.base.Joiner;
@@ -27,8 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class RandomStringSequence
-        extends AbstractRandomInt {
+public class RandomStringSequence extends AbstractRandomInt {
 
     private final int count;
     private final Distribution distribution;
@@ -39,8 +34,7 @@ public class RandomStringSequence
     }
 
 
-    public RandomStringSequence( long seed, int count, Distribution distribution,
-            int expectedRowCount ) {
+    public RandomStringSequence( long seed, int count, Distribution distribution, int expectedRowCount ) {
         super( seed, distribution.size() * expectedRowCount );
         this.count = count;
         this.distribution = distribution;

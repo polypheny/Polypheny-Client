@@ -4,7 +4,6 @@ package ch.unibas.dmi.dbis.polyphenydb.client.scenarios.tpch.worker;
 import static ch.unibas.dmi.dbis.polyphenydb.client.config.Config.DEFAULT_WORKER_STORAGE_LOCATION;
 
 import ch.unibas.dmi.dbis.polyphenydb.client.config.Config;
-import ch.unibas.dmi.dbis.polyphenydb.client.db.access.ConnectionException;
 import ch.unibas.dmi.dbis.polyphenydb.client.db.tpch.TPCHBenchmarker;
 import ch.unibas.dmi.dbis.polyphenydb.client.grpc.PolyClientGRPC.FetchResultsMessage;
 import ch.unibas.dmi.dbis.polyphenydb.client.grpc.PolyClientGRPC.ResultMessage;
@@ -60,44 +59,39 @@ public class Terminal implements Runnable {
     public void run() {
         running = true;
         while ( running ) {
-            try {
-                // througput test (5.3.4, page 95) run queryStream (TPCHConfig.STREAM times)
-                if ( refreshStream ) {
-                    //run refreshStream (once with TPCHConfig.STREAM RF pairs)
-                    for ( int i = 0; i < worker.getWorkerMessage().getStreams(); i++ ) {
-                        if ( !running ) {
-                            continue;
-                        }
-
-                        if ( !Config.EXECUTE_REFRESH_FUNCTIONS ) {
-                            logger.info( "Stopping execution on refresh-stream" );
-                            this.stop();
-                            return;
-                        }
-                        //RF1
-                        TPCHResultTuple tupleRF1 = benchmarker.genericRefreshFunctionExecutor( 23 );
-                        logTransaction( tupleRF1 );
-                        worker.queryCounter.incrementAndGet();
-                        if ( !running ) {
-                            continue;
-                        }
-                        TPCHResultTuple tupleRF2 = benchmarker.genericRefreshFunctionExecutor( 24 );
-                        logTransaction( tupleRF2 );
-                        worker.queryCounter.incrementAndGet();
-
+            // througput test (5.3.4, page 95) run queryStream (TPCHConfig.STREAM times)
+            if ( refreshStream ) {
+                //run refreshStream (once with TPCHConfig.STREAM RF pairs)
+                for ( int i = 0; i < worker.getWorkerMessage().getStreams(); i++ ) {
+                    if ( !running ) {
+                        continue;
                     }
-                } else {
-                    for ( int i = 1; i <= 22; i++ ) {
-                        if ( !running ) {
-                            continue;
-                        }
-                        logTransaction( benchmarker.genericQueryExecutor( i ) );
-                        worker.queryCounter.incrementAndGet();
+
+                    if ( !Config.EXECUTE_REFRESH_FUNCTIONS ) {
+                        logger.info( "Stopping execution on refresh-stream" );
+                        this.stop();
+                        return;
                     }
+                    //RF1
+                    TPCHResultTuple tupleRF1 = benchmarker.genericRefreshFunctionExecutor( 23 );
+                    logTransaction( tupleRF1 );
+                    worker.queryCounter.incrementAndGet();
+                    if ( !running ) {
+                        continue;
+                    }
+                    TPCHResultTuple tupleRF2 = benchmarker.genericRefreshFunctionExecutor( 24 );
+                    logTransaction( tupleRF2 );
+                    worker.queryCounter.incrementAndGet();
+
                 }
-            } catch ( ConnectionException e ) {
-                logger.error( "ConnectionException during transaction. Exiting." );
-                throw new RuntimeException( e );
+            } else {
+                for ( int i = 1; i <= 22; i++ ) {
+                    if ( !running ) {
+                        continue;
+                    }
+                    logTransaction( benchmarker.genericQueryExecutor( i ) );
+                    worker.queryCounter.incrementAndGet();
+                }
             }
         }
         benchmarker.abort();

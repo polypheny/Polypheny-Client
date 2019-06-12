@@ -79,7 +79,7 @@ public class RESTConnector implements DBConnector {
     /**
      * Execute a POST-Request with the same code as in icarus-client
      */
-    private synchronized String postIcarusClient( String sql ) throws ConnectionException {
+    private synchronized String postIcarusClient( String sql ) {
         HttpResponse<InputStream> httpResponse;
         try {
             query.addProperty( "sql", sql );
@@ -134,13 +134,13 @@ public class RESTConnector implements DBConnector {
 
 
     @Override
-    public void commitTransaction() throws ConnectionException {
+    public void commitTransaction() {
         logger.trace( "REST does not support transactions ATM" );
     }
 
 
     @Override
-    public void abortTransaction() throws ConnectionException {
+    public void abortTransaction() {
         logger.trace( "REST does nto support transactions ATM" );
     }
 
@@ -159,7 +159,7 @@ public class RESTConnector implements DBConnector {
 
 
     @Override
-    public void executeScript( File file ) throws ConnectionException {
+    public void executeScript( File file ) {
         throw new UnsupportedOperationException();
     }
 

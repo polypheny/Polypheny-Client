@@ -132,7 +132,7 @@ public abstract class TPCCBenchmarker {
     public abstract DeliveryTransactionExecutor getDeliveryTransactionExecutor();
 
     /**
-     * Create the DB Schema according to section 1.2. See for instance {@link TPCCBenchmarker#createTables(ProgressListener)} for a reference implementation.
+     * Create the DB Schema according to section 1.2.
      */
     public abstract void createTables( ProgressListener progressListener );
 

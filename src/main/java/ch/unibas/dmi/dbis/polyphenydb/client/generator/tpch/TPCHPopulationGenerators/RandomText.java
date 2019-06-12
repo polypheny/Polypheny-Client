@@ -1,11 +1,3 @@
-package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGenerators;
-
-
-/**
- * Created by manuelhuerbin on 29.04.17.
- */
-
-
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +11,11 @@ package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGener
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class RandomText
-        extends AbstractRandomInt {
+
+package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGenerators;
+
+
+public class RandomText extends AbstractRandomInt {
 
     private static final double LOW_LENGTH_MULTIPLIER = 0.4;
     private static final double HIGH_LENGTH_MULTIPLIER = 1.6;
@@ -35,8 +30,7 @@ public class RandomText
     }
 
 
-    public RandomText( long seed, TextPool textPool, double averageTextLength,
-            int expectedRowCount ) {
+    public RandomText( long seed, TextPool textPool, double averageTextLength, int expectedRowCount ) {
         super( seed, expectedRowCount * 2 );
         this.textPool = textPool;
         this.minLength = (int) (averageTextLength * LOW_LENGTH_MULTIPLIER);

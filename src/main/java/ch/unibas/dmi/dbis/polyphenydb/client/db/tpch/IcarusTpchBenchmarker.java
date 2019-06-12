@@ -439,7 +439,7 @@ public class IcarusTpchBenchmarker extends TPCHBenchmarker {
 
 
     @Override
-    public TPCHResultTuple genericQueryExecutor( int queryID ) throws ConnectionException {
+    public TPCHResultTuple genericQueryExecutor( int queryID ) {
         logger.trace( "Executing Query {}", queryID );
         String query = new String( QGenIcarus.createQuery( SCALE_FACTOR, queryID ) );
         //TODO Jar Execution needs modification
@@ -448,7 +448,7 @@ public class IcarusTpchBenchmarker extends TPCHBenchmarker {
 
 
     @Override
-    public TPCHResultTuple genericRefreshFunctionExecutor( int refreshFunctionID ) throws ConnectionException {
+    public TPCHResultTuple genericRefreshFunctionExecutor( int refreshFunctionID ) {
         TPCHTransactionType transactionType = TPCHTransactionType.TPCHTRANSACTIONUNDEFINED;
         logger.debug( "Executing RF" + (refreshFunctionID - 22) + " transaction" );
         long start = System.currentTimeMillis();

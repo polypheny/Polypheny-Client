@@ -132,27 +132,22 @@ public class TPCHScenario implements Scenario {
         logger.info( "Executing Power test" );
         //power test (5.3.3, page 95) with RF1 - QueryStream00 - RF2
         //RF1
-        try {
-            if ( Config.EXECUTE_REFRESH_FUNCTIONS ) {
-                logger.info( "Executing RF1" );
-                TPCHResultTuple tupleRF1 = benchmarker.genericRefreshFunctionExecutor( 23 );
-                logTransaction( tupleRF1 );
-            }
-            //QueryStream00
-            for ( int i = 1; i <= 22; i++ ) {
-                logger.info( "Executing query {}", i );
-                TPCHResultTuple tupleQ = benchmarker.genericQueryExecutor( i );
-                logTransaction( tupleQ );
-            }
-            if ( Config.EXECUTE_REFRESH_FUNCTIONS ) {
-                logger.info( "Executing RF2" );
-                //RF2
-                TPCHResultTuple tupleRF2 = benchmarker.genericRefreshFunctionExecutor( 24 );
-                logTransaction( tupleRF2 );
-            }
-        } catch ( ConnectionException e ) {
-            logger.error( "ConnectionException during transaction. Exiting." );
-            throw new RuntimeException( e );
+        if ( Config.EXECUTE_REFRESH_FUNCTIONS ) {
+            logger.info( "Executing RF1" );
+            TPCHResultTuple tupleRF1 = benchmarker.genericRefreshFunctionExecutor( 23 );
+            logTransaction( tupleRF1 );
+        }
+        //QueryStream00
+        for ( int i = 1; i <= 22; i++ ) {
+            logger.info( "Executing query {}", i );
+            TPCHResultTuple tupleQ = benchmarker.genericQueryExecutor( i );
+            logTransaction( tupleQ );
+        }
+        if ( Config.EXECUTE_REFRESH_FUNCTIONS ) {
+            logger.info( "Executing RF2" );
+            //RF2
+            TPCHResultTuple tupleRF2 = benchmarker.genericRefreshFunctionExecutor( 24 );
+            logTransaction( tupleRF2 );
         }
         logger.debug( "Power test finished" );
     }

@@ -3,7 +3,6 @@ package ch.unibas.dmi.dbis.polyphenydb.client.scenarios.musqle.worker;
 
 import static ch.unibas.dmi.dbis.polyphenydb.client.config.Config.DEFAULT_WORKER_STORAGE_LOCATION;
 
-import ch.unibas.dmi.dbis.polyphenydb.client.db.access.ConnectionException;
 import ch.unibas.dmi.dbis.polyphenydb.client.db.musqle.MusqleBenchmarker;
 import ch.unibas.dmi.dbis.polyphenydb.client.grpc.PolyClientGRPC.FetchResultsMessage;
 import ch.unibas.dmi.dbis.polyphenydb.client.grpc.PolyClientGRPC.MUSQLEResultMessage;
@@ -57,16 +56,11 @@ public class Terminal implements Runnable {
     public void run() {
         running = true;
         while ( running ) {
-            try {
-                for ( int i = 1; i <= 18; i++ ) {
-                    if ( !running ) {
-                        continue;
-                    }
-                    logTransaction( benchmarker.genericQueryExecutor( i ) );
+            for ( int i = 1; i <= 18; i++ ) {
+                if ( !running ) {
+                    continue;
                 }
-            } catch ( ConnectionException e ) {
-                logger.error( "ConnectionException during transaction. Exiting." );
-                throw new RuntimeException( e );
+                logTransaction( benchmarker.genericQueryExecutor( i ) );
             }
         }
         benchmarker.abort();

@@ -1,11 +1,3 @@
-package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGenerators;
-
-
-/**
- * Created by manuelhuerbin on 29.04.17.
- */
-
-
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +11,13 @@ package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGener
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class RandomAlphaNumeric
-        extends AbstractRandomInt {
 
-    private static final char[] ALPHA_NUMERIC = "0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,"
-            .toCharArray();
+package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGenerators;
+
+
+public class RandomAlphaNumeric extends AbstractRandomInt {
+
+    private static final char[] ALPHA_NUMERIC = "0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,".toCharArray();
 
     private static final double LOW_LENGTH_MULTIPLIER = 0.4;
     private static final double HIGH_LENGTH_MULTIPLIER = 1.6;

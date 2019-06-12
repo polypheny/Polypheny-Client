@@ -111,7 +111,6 @@ public class ConsoleCommand extends AbstractCommand {
                 writer.print( "> " );
                 writer.flush();
 
-                mainCommandLoop:
                 while ( (line = reader.nextLine()) != null ) {
                     if ( line.isEmpty() ) {
                         writer.print( "> " );
@@ -142,8 +141,8 @@ public class ConsoleCommand extends AbstractCommand {
                             }
                         }
                     } else if ( line.startsWith( "!" ) ) {
-                        if(line.toLowerCase().startsWith( "!tables" )) {
-                            ResultSet rs = connection.getMetaData().getTables(null, null, "%", null);
+                        if ( line.toLowerCase().startsWith( "!tables" ) ) {
+                            ResultSet rs = connection.getMetaData().getTables( null, null, "%", null );
                             writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
                             rs.close();
                         }

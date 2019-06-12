@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 
 /**
- * Caculates average {@link TPCCResultTuple#getResponseTime()} per {@link TPCCTransactionType}
+ * Calculates average {@link TPCCResultTuple#getResponseTime()} per {@link TPCCTransactionType}
  *
  * @author silvan on 26.07.17.
  */

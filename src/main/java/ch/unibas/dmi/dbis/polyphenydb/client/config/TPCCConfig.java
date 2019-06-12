@@ -4,7 +4,7 @@ package ch.unibas.dmi.dbis.polyphenydb.client.config;
 /**
  * Collection of static parameters of the TPC-C Benchmark. The default values come from the TPC-C Specification 5.11
  *
- * This config is an embarassing attempt to make the TPC-C Benchmark more configurable. Unfortunately, these 'magic numbers' are intertwined in the whole Specification such that changing numbers here almost certainly will break things because it is not always clear which methods depend on what.
+ * This config is an embarrassing attempt to make the TPC-C Benchmark more configurable. Unfortunately, these 'magic numbers' are intertwined in the whole Specification such that changing numbers here almost certainly will break things because it is not always clear which methods depend on what.
  *
  * @author Silvan Heller
  * @tpccversion 5.11

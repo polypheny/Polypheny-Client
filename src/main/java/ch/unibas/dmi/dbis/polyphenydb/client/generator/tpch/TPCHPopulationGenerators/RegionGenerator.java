@@ -1,10 +1,3 @@
-package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGenerators;
-
-/**
- * Created by manuelhuerbin on 29.04.17.
- */
-
-
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +12,9 @@ package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGener
  * limitations under the License.
  */
 
+package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGenerators;
+
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.objects.Region;
@@ -26,8 +22,7 @@ import com.google.common.collect.AbstractIterator;
 import java.util.Iterator;
 
 
-public class RegionGenerator
-        implements Iterable<Region> {
+public class RegionGenerator implements Iterable<Region> {
 
     private static final int COMMENT_AVERAGE_LENGTH = 72;
 
@@ -52,8 +47,7 @@ public class RegionGenerator
     }
 
 
-    private static class RegionGeneratorIterator
-            extends AbstractIterator<Region> {
+    private static class RegionGeneratorIterator extends AbstractIterator<Region> {
 
         private final Distribution regions;
         private final RandomText commentRandom;
@@ -73,10 +67,7 @@ public class RegionGenerator
                 return endOfData();
             }
 
-            Region region = new Region( index,
-                    index,
-                    regions.getValue( index ),
-                    commentRandom.nextValue() );
+            Region region = new Region( index, index, regions.getValue( index ), commentRandom.nextValue() );
 
             commentRandom.rowFinished();
             index++;

@@ -25,7 +25,6 @@ import ch.unibas.dmi.dbis.polyphenydb.client.scenarios.tpch.worker.TPCHWorker;
 import ch.unibas.dmi.dbis.polyphenydb.client.scenarios.ycsb.worker.YCSBWorker;
 import io.grpc.stub.StreamObserver;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.logging.log4j.LogManager;
@@ -143,15 +142,9 @@ public class ClientWorkerImpl extends ClientWorkerImplBase {
     @Override
     public void monitorWorker( MonitorWorkerMessage request, StreamObserver<AckMessage> responseObserver ) {
         logger.debug( "Received RPC Request to monitor worker" );
-        try {
-            File storageFolder = new File( Config.DEFAULT_WORKER_STORAGE_LOCATION, "netdata" );
-            storageFolder.mkdirs();
-            monitors.put( request.getUrl(), new NetdataMonitor( request.getUrl(), new File( storageFolder, "netdata-measurements-" + request.getUrl() + ".json" ), request.getOptionsList() ) );
-        } catch ( IOException e ) {
-            logger.error( e );
-            responseObserver.onError( e );
-            return;
-        }
+        File storageFolder = new File( Config.DEFAULT_WORKER_STORAGE_LOCATION, "netdata" );
+        storageFolder.mkdirs();
+        monitors.put( request.getUrl(), new NetdataMonitor( request.getUrl(), new File( storageFolder, "netdata-measurements-" + request.getUrl() + ".json" ), request.getOptionsList() ) );
         new Thread( monitors.get( request.getUrl() ) ).start();
         responseObserver.onNext( okACK() );
         responseObserver.onCompleted();
@@ -167,13 +160,7 @@ public class ClientWorkerImpl extends ClientWorkerImplBase {
             responseObserver.onError( new RuntimeException( "No Monitor for given url on this worker" ) );
             return;
         }
-        try {
-            monitors.get( request.getUrl() ).sendMeasurements( responseObserver );
-        } catch ( IOException e ) {
-            logger.error( e );
-            responseObserver.onError( e );
-            return;
-        }
+        monitors.get( request.getUrl() ).sendMeasurements( responseObserver );
         responseObserver.onCompleted();
         logger.debug( "Leaving RPC Request to fetch monitor results" );
     }

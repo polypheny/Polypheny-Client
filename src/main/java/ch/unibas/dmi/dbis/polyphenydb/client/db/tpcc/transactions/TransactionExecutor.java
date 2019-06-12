@@ -117,7 +117,7 @@ public abstract class TransactionExecutor {
 
 
     /**
-     * The database transaction is commited.
+     * The database transaction is committed.
      */
     protected void commitTransaction() {
         try {

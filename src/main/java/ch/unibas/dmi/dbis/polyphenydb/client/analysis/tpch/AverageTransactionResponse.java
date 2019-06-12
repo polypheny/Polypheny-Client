@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 
 /**
- * Caculates average {@link TPCHResultTuple#getResponseTime()} per {@link TPCHTransactionType}
+ * Calculates average {@link TPCHResultTuple#getResponseTime()} per {@link TPCHTransactionType}
  *
  * @author silvan on 26.07.17.
  */

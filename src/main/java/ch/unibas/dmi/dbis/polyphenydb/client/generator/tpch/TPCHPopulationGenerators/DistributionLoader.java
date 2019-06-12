@@ -1,10 +1,3 @@
-package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGenerators;
-
-/**
- * Created by manuelhuerbin on 29.04.17.
- */
-
-
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +12,13 @@ package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGener
  * limitations under the License.
  */
 
+package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGenerators;
+
+
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Iterators.filter;
 
 import com.google.common.base.CharMatcher;
-import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -40,12 +35,9 @@ public class DistributionLoader {
     public static <R extends Readable & Closeable> Map<String, Distribution> loadDistribution(
             CharSource input )
             throws IOException {
-        Iterator<String> iterator = filter( input.readLines().iterator(), new Predicate<String>() {
-            @Override
-            public boolean apply( String line ) {
-                line = line.trim();
-                return !line.isEmpty() && !line.startsWith( "#" );
-            }
+        Iterator<String> iterator = filter( input.readLines().iterator(), line -> {
+            line = line.trim();
+            return !line.isEmpty() && !line.startsWith( "#" );
         } );
 
         return loadDistributions( iterator );
@@ -96,7 +88,7 @@ public class DistributionLoader {
 
     private static boolean isEnd( String name, String line ) {
         List<String> parts = ImmutableList
-                .copyOf( Splitter.on( CharMatcher.WHITESPACE ).omitEmptyStrings().split( line ) );
+                .copyOf( Splitter.on( CharMatcher.whitespace() ).omitEmptyStrings().split( line ) );
         if ( parts.get( 0 ).equalsIgnoreCase( "END" ) ) {
             checkState( parts.size() == 2 && parts.get( 1 ).equalsIgnoreCase( name ),
                     "Expected end statement be 'END %s', but was '%s'", name, line );
@@ -112,7 +104,7 @@ public class DistributionLoader {
             // advance to "begin"
             String line = lines.next();
             List<String> parts = ImmutableList
-                    .copyOf( Splitter.on( CharMatcher.WHITESPACE ).omitEmptyStrings().split( line ) );
+                    .copyOf( Splitter.on( CharMatcher.whitespace() ).omitEmptyStrings().split( line ) );
             if ( parts.size() != 2 ) {
                 continue;
             }

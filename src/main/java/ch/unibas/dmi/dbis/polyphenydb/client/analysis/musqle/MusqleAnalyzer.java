@@ -14,12 +14,12 @@ public interface MusqleAnalyzer {
     /**
      * Receive and process the next tuple
      */
-    public void process( MUSQLEResultTuple tuple );
+    void process( MUSQLEResultTuple tuple );
 
 
     /**
      * Receive the results of the aggregation
      */
-    public JsonObject getResults();
+    JsonObject getResults();
 
 }

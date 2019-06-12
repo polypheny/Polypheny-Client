@@ -1,10 +1,3 @@
-package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGenerators;
-
-/**
- * Created by manuelhuerbin on 29.04.17.
- */
-
-
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +12,12 @@ package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGener
  * limitations under the License.
  */
 
-import static com.google.common.base.CharMatcher.WHITESPACE;
+package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGenerators;
+
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import java.util.List;
 
@@ -47,10 +43,7 @@ public class TextPoolGenerator {
 
 
     public TextPoolGenerator( int size, Distributions distributions ) {
-        this( size, distributions, new TextGenerationProgressMonitor() {
-            public void updateProgress( double progress ) {
-            }
-        } );
+        this( size, distributions, progress -> { } );
     }
 
 
@@ -222,7 +215,7 @@ public class TextPoolGenerator {
             bonusText = new String[distribution.size()];
             for ( int i = 0; i < distribution.size(); i++ ) {
 
-                List<String> tokens = Splitter.on( WHITESPACE ).splitToList( distribution.getValue( i ) );
+                List<String> tokens = Splitter.on(  CharMatcher.whitespace() ).splitToList( distribution.getValue( i ) );
 
                 parsedDistribution[i] = new char[tokens.size()];
                 for ( int j = 0; j < parsedDistribution[i].length; j++ ) {

@@ -3,6 +3,7 @@ package ch.unibas.dmi.dbis.polyphenydb.client.scenarios.musqle.worker;
 
 import ch.unibas.dmi.dbis.polyphenydb.client.db.musqle.IcarusMusqleBenchmarker;
 import ch.unibas.dmi.dbis.polyphenydb.client.db.musqle.MusqleBenchmarker;
+import ch.unibas.dmi.dbis.polyphenydb.client.grpc.PolyClientGRPC.DBMSSystem;
 import ch.unibas.dmi.dbis.polyphenydb.client.grpc.PolyClientGRPC.FetchResultsMessage;
 import ch.unibas.dmi.dbis.polyphenydb.client.grpc.PolyClientGRPC.LaunchWorkerMessage;
 import ch.unibas.dmi.dbis.polyphenydb.client.grpc.PolyClientGRPC.ProgressMessage;
@@ -92,13 +93,11 @@ public class MusqleWorker implements Worker {
      * @return a {@link MusqleBenchmarker} which can be used to run queries against the System
      */
     public MusqleBenchmarker createBenchmarker( Terminal terminal ) {
-        switch ( this.workerMessage.getDbInfo().getSystem() ) {
-            case SYSTEMICARUS:
-                return new IcarusMusqleBenchmarker( this.workerMessage );
-            default:
-                logger.error( "System {} not supported", this.workerMessage.getDbInfo().getSystem() );
-                throw new UnsupportedOperationException();
+        if ( this.workerMessage.getDbInfo().getSystem() == DBMSSystem.SYSTEMICARUS ) {
+            return new IcarusMusqleBenchmarker( this.workerMessage );
         }
+        logger.error( "System {} not supported", this.workerMessage.getDbInfo().getSystem() );
+        throw new UnsupportedOperationException();
     }
 
 

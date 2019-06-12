@@ -16,12 +16,12 @@ public interface TPCHAnalyzer {
     /**
      * Receive and process the next tuple
      */
-    public void process( TPCHResultTuple tuple );
+    void process( TPCHResultTuple tuple );
 
 
     /**
      * Receive the results of the aggregation
      */
-    public JsonObject getResults();
+    JsonObject getResults();
 
 }

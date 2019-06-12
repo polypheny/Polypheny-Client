@@ -35,7 +35,6 @@ public class JsonStreamReader<T> {
      * @param storage where the json data is located
      * @param typeParameterClass since we can't call T.class, we use this to help with the JSON-Parsing
      * @param gson Register your custom deserializers here for Protobuf objects. For an Example, see {@link WorkerMonitorResultDeserializer} and {@link NetdataMonitor}
-     * @throws IOException error while instantiating the JsonReader
      */
     public JsonStreamReader( File storage, Class<T> typeParameterClass, Gson gson ) {
         this.storage = storage;

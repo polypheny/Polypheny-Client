@@ -1,10 +1,3 @@
-package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.objects;
-
-/**
- * Created by manuelhuerbin on 29.04.17.
- */
-
-
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +12,14 @@ package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.objects;
  * limitations under the License.
  */
 
+package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.objects;
+
+
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Locale.ENGLISH;
 
 
-public class Part
-        implements TpchEntity {
+public class Part implements TpchEntity {
 
     private final long rowNumber;
     private final long partKey;

@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 
 /**
- * Caculates average {@link MUSQLEResultTuple#getResponseTime()} per {@link MusqleTransactionType }
+ * Calculates average {@link MUSQLEResultTuple#getResponseTime()} per {@link MusqleTransactionType }
  */
 public class AverageTransactionResponse implements MusqleAnalyzer {
 

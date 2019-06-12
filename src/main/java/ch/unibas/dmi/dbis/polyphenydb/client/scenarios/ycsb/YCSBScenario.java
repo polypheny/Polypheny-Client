@@ -92,8 +92,7 @@ public class YCSBScenario implements Scenario {
                     "the number of workers in the job is not equal to the number of URLs specified" );
         }
 
-        for ( int i = 0; i < workerURLs.length; i++ ) {
-            String workerURL = workerURLs[i];
+        for ( String workerURL : workerURLs ) {
             //Create workerStub
             WorkerStub worker = new WorkerStub( workerURL );
             workers.add( worker );

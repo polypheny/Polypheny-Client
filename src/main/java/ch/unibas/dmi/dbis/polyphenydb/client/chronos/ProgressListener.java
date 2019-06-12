@@ -14,8 +14,8 @@ public interface ProgressListener {
     /**
      * @param progress Between 0 and 1
      */
-    public void setBenchmarkProgress( Double progress );
+    void setBenchmarkProgress( Double progress );
 
-    public void reportPopulationProgress( Optional<Double> progress, Optional<String> progressMessage );
+    void reportPopulationProgress( Optional<Double> progress, Optional<String> progressMessage );
 
 }

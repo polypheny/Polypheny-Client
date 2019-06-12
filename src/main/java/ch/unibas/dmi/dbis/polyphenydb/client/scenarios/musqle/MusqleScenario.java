@@ -9,7 +9,6 @@ import ch.unibas.dmi.dbis.polyphenydb.client.analysis.musqle.MusqleAnalysis;
 import ch.unibas.dmi.dbis.polyphenydb.client.chronos.DummyProgressListener;
 import ch.unibas.dmi.dbis.polyphenydb.client.chronos.ProgressListener;
 import ch.unibas.dmi.dbis.polyphenydb.client.config.Config;
-import ch.unibas.dmi.dbis.polyphenydb.client.db.access.ConnectionException;
 import ch.unibas.dmi.dbis.polyphenydb.client.db.musqle.IcarusMusqleBenchmarker;
 import ch.unibas.dmi.dbis.polyphenydb.client.db.musqle.MusqleBenchmarker;
 import ch.unibas.dmi.dbis.polyphenydb.client.grpc.PolyClientGRPC;
@@ -125,16 +124,11 @@ public class MusqleScenario implements Scenario {
 
     public void powerTest( MusqleBenchmarker benchmarker ) {
         logger.info( "Executing Power test" );
-        try {
-            //QueryStream00
-            for ( int i = 1; i <= 18; i++ ) {
-                logger.info( "Executing query {}", i );
-                MUSQLEResultTuple tupleQ = benchmarker.genericQueryExecutor( i );
-                logTransaction( tupleQ );
-            }
-        } catch ( ConnectionException e ) {
-            logger.error( "ConnectionException during transaction. Exiting." );
-            throw new RuntimeException( e );
+        //QueryStream00
+        for ( int i = 1; i <= 18; i++ ) {
+            logger.info( "Executing query {}", i );
+            MUSQLEResultTuple tupleQ = benchmarker.genericQueryExecutor( i );
+            logTransaction( tupleQ );
         }
         logger.info( "Power test finished" );
     }
@@ -170,8 +164,7 @@ public class MusqleScenario implements Scenario {
                     "the number of workers in the job is not equal to the number of URLs specified" );
         }
 
-        for ( int i = 0; i < workerURLs.length; i++ ) {
-            String workerURL = workerURLs[i];
+        for ( String workerURL : workerURLs ) {
             //Create workerStub
             WorkerStub worker = new WorkerStub( workerURL );
             workers.add( worker );
@@ -198,13 +191,10 @@ public class MusqleScenario implements Scenario {
      */
     private MusqleBenchmarker generateBenchmarker() {
         DBMSSystem dbms = job.getEvaluation().getOptions().getSystem();
-        switch ( dbms ) {
-            case SYSTEMICARUS:
-                return new IcarusMusqleBenchmarker( job );
-            default:
-                throw new UnsupportedOperationException(
-                        "System " + dbms + " is not supported by the MuSQLE Benchmark" );
+        if ( dbms == DBMSSystem.SYSTEMICARUS ) {
+            return new IcarusMusqleBenchmarker( job );
         }
+        throw new UnsupportedOperationException( "System " + dbms + " is not supported by the MuSQLE Benchmark" );
     }
 
 

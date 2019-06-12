@@ -49,7 +49,7 @@ public class IcarusMusqleBenchmarker extends MusqleBenchmarker {
 
 
     @Override
-    public MUSQLEResultTuple genericQueryExecutor( int queryID ) throws ConnectionException {
+    public MUSQLEResultTuple genericQueryExecutor( int queryID ) {
         logger.trace( "Executing Query {}", queryID );
         String query = QGenIcarus.createQuery( SCALE_FACTOR, queryID );
         return super.genericQueryExecutor( queryID, connector, query );

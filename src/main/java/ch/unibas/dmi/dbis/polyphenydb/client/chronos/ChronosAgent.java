@@ -3,11 +3,11 @@ package ch.unibas.dmi.dbis.polyphenydb.client.chronos;
 
 import ch.unibas.dmi.dbis.chronos.agent.AbstractChronosAgent;
 import ch.unibas.dmi.dbis.chronos.agent.ChronosJob;
+import ch.unibas.dmi.dbis.chronos.agent.ExecutionException;
 import java.io.File;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Properties;
-import java.util.concurrent.ExecutionException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -72,15 +72,15 @@ public class ChronosAgent extends AbstractChronosAgent {
 
 
     @Override
-    protected Object prepare( ChronosJob chronosJob, File inputDir, File outputDir, Properties properties, Object o ) throws ExecutionException {
-        logger.warn( "No preperation yet for this agent" );
+    protected Object prepare( ChronosJob chronosJob, File inputDir, File outputDir, Properties properties, Object o ) {
+        logger.warn( "No preparation yet for this agent" );
         logger.warn( "You should populate your DB already here?" );
         return o;
     }
 
 
     @Override
-    protected Object warmUp( ChronosJob chronosJob, File inputDir, File outputDir, Properties properties, Object o ) throws ExecutionException {
+    protected Object warmUp( ChronosJob chronosJob, File inputDir, File outputDir, Properties properties, Object o ) {
         logger.debug( "skipping warmup" );
         return o;
     }
@@ -104,17 +104,17 @@ public class ChronosAgent extends AbstractChronosAgent {
 
 
     @Override
-    protected Object analyze( ChronosJob chronosJob, File inputDir, File outputDir, Properties properties, Object o ) throws ExecutionException {
-        logger.warn( "No analyzation step implemented for ChronosAgent" );
-        logger.warn( "We should put results in the properties-object / IO folder and then do anaylsis here" );
+    protected Object analyze( ChronosJob chronosJob, File inputDir, File outputDir, Properties properties, Object o ) {
+        logger.warn( "No analysis step implemented for ChronosAgent" );
+        logger.warn( "We should put results in the properties-object / IO folder and then do analysis here" );
         logger.debug( "Not passing any object to clean" );
         return o;
     }
 
 
     @Override
-    protected Object clean( ChronosJob chronosJob, File inputDir, File outputDir, Properties properties, Object o ) throws ExecutionException {
-        logger.warn( "No cleanup step implemented in chronosagent" );
+    protected Object clean( ChronosJob chronosJob, File inputDir, File outputDir, Properties properties, Object o ) {
+        logger.warn( "No cleanup step implemented in chronos agent" );
         return o;
     }
 
@@ -124,7 +124,7 @@ public class ChronosAgent extends AbstractChronosAgent {
      *
      * @return Properties which will be uploaded to chronos
      */
-    protected Properties execute( ChronosJob chronosJob, File inputDir, File outputDir ) throws ExecutionException {
+    protected Properties execute( ChronosJob chronosJob, File inputDir, File outputDir ) {
         ChronosProgressListener progressListener = new ChronosProgressListener( chronosJob, this );
         ChronosExecutor executor = new ChronosExecutor( chronosJob, inputDir, outputDir, progressListener );
         runningJobs.put( chronosJob.id, executor );

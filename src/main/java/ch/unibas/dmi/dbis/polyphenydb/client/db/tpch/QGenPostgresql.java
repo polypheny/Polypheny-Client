@@ -470,7 +470,7 @@ public class QGenPostgresql {
         int[] array = new int[n];
         ArrayList<Integer> list = new ArrayList<>();
         for ( int i = 0 + 10; i <= 24 + 10; i++ ) { // 24 countries
-            list.add( new Integer( i ) );
+            list.add( i );
         }
         Collections.shuffle( list );
         for ( int i = 0; i < n; i++ ) {

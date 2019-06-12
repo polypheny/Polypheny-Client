@@ -15,11 +15,11 @@ public interface TPCCAnalyzer {
     /**
      * Receive and process the next {@link TPCCResultTuple}
      */
-    public void process( TPCCResultTuple tuple );
+    void process( TPCCResultTuple tuple );
 
     /**
      * Receive the results of the aggregation
      */
-    public JsonObject getResults();
+    JsonObject getResults();
 
 }

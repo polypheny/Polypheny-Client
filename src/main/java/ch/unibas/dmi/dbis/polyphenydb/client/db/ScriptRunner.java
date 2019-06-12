@@ -47,17 +47,14 @@ public class ScriptRunner {
     /**
      * regex to detect delimiter. ignores spaces, allows delimiter in comment, allows an equals-sign
      */
-    public static final Pattern delimP = Pattern
-            .compile( "^\\s*(--)?\\s*delimiter\\s*=?\\s*([^\\s]+)+\\s*.*$", Pattern.CASE_INSENSITIVE );
+    private static final Pattern delimP = Pattern.compile( "^\\s*(--)?\\s*delimiter\\s*=?\\s*([^\\s]+)+\\s*.*$", Pattern.CASE_INSENSITIVE );
     private static final String DEFAULT_DELIMITER = ";";
     private final Connection connection;
 
     private final boolean stopOnError;
     private final boolean autoCommit;
 
-    @SuppressWarnings("UseOfSystemOutOrSystemErr")
     private PrintWriter logWriter = null;
-    @SuppressWarnings("UseOfSystemOutOrSystemErr")
     private PrintWriter errorLogWriter = null;
 
     private String delimiter = DEFAULT_DELIMITER;
@@ -67,8 +64,7 @@ public class ScriptRunner {
     /**
      * Default constructor
      */
-    public ScriptRunner( Connection connection, boolean autoCommit,
-            boolean stopOnError ) {
+    public ScriptRunner( Connection connection, boolean autoCommit, boolean stopOnError ) {
         this.connection = connection;
         this.autoCommit = autoCommit;
         this.stopOnError = stopOnError;
@@ -156,8 +152,7 @@ public class ScriptRunner {
      * @throws SQLException if any SQL errors occur
      * @throws IOException if there is an error reading from the Reader
      */
-    private void runScript( Connection conn, Reader reader ) throws IOException,
-            SQLException {
+    private void runScript( Connection conn, Reader reader ) throws IOException, SQLException {
         StringBuffer command = null;
         try {
             LineNumberReader lineReader = new LineNumberReader( reader );
@@ -168,22 +163,17 @@ public class ScriptRunner {
                 }
                 String trimmedLine = line.trim();
                 final Matcher delimMatch = delimP.matcher( trimmedLine );
-                if ( trimmedLine.length() < 1
-                        || trimmedLine.startsWith( "//" ) ) {
+                if ( trimmedLine.length() < 1 || trimmedLine.startsWith( "//" ) ) {
                     // Do nothing
                 } else if ( delimMatch.matches() ) {
                     setDelimiter( delimMatch.group( 2 ), false );
                 } else if ( trimmedLine.startsWith( "--" ) ) {
                     println( trimmedLine );
-                } else if ( trimmedLine.length() < 1
-                        || trimmedLine.startsWith( "--" ) ) {
-                    // Do nothing
                 } else if ( !fullLineDelimiter
                         && trimmedLine.endsWith( getDelimiter() )
                         || fullLineDelimiter
                         && trimmedLine.equals( getDelimiter() ) ) {
-                    command.append( line.substring( 0, line
-                            .lastIndexOf( getDelimiter() ) ) );
+                    command.append( line.substring( 0, line.lastIndexOf( getDelimiter() ) ) );
                     command.append( " " );
                     this.execCommand( conn, command, lineReader );
                     command = null;
@@ -199,8 +189,7 @@ public class ScriptRunner {
                 conn.commit();
             }
         } catch ( IOException e ) {
-            throw new IOException( String.format( "Error executing '%s': %s", command, e.getMessage() ),
-                    e );
+            throw new IOException( String.format( "Error executing '%s': %s", command, e.getMessage() ), e );
         } finally {
             conn.rollback();
             flush();
@@ -261,8 +250,6 @@ public class ScriptRunner {
         return delimiter;
     }
 
-
-    @SuppressWarnings("UseOfSystemOutOrSystemErr")
 
     private void print( Object o ) {
         if ( logWriter != null ) {

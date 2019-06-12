@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,7 +43,7 @@ public class StreamWriter<T> implements StreamObserver<T> {
         this.future = future;
         this.storage = storage;
         try {
-            writer = new JsonWriter( new OutputStreamWriter( new BufferedOutputStream( new FileOutputStream( storage ) ), "UTF-8" ) );
+            writer = new JsonWriter( new OutputStreamWriter( new BufferedOutputStream( new FileOutputStream( storage ) ), StandardCharsets.UTF_8 ) );
             this.typeParameterClass = typeParameterClass;
 
             writer.setIndent( "  " );

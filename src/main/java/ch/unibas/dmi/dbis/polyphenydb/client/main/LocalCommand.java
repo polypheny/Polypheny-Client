@@ -19,7 +19,7 @@ import org.apache.logging.log4j.Logger;
 @Command(name = "local", description = "For testing without chronos. Executes against a specified Job-XML.")
 public class LocalCommand extends AbstractCommand {
 
-    @Option(title = "Populate Database", name = { "--populate" }, description = "Use this flag if you want to initalize and fill the Database tables as well")
+    @Option(title = "Populate Database", name = { "--populate" }, description = "Use this flag if you want to initialize and fill the Database tables as well")
     private boolean populate;
 
     @Option(title = "Properties", name = { "--properties" }, description = "Relative path to the file which contains the Chronos Job-XML.")

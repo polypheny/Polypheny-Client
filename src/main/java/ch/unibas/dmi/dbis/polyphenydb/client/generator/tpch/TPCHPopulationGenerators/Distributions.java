@@ -1,10 +1,3 @@
-package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGenerators;
-
-/**
- * Created by manuelhuerbin on 29.04.17.
- */
-
-
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +12,15 @@ package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGener
  * limitations under the License.
  */
 
+
+package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGenerators;
+
+
 import static ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGenerators.DistributionLoader.loadDistribution;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
 import com.google.common.base.Charsets;
-import com.google.common.base.Throwables;
 import com.google.common.io.Resources;
 import java.io.IOException;
 import java.net.URL;
@@ -90,7 +86,7 @@ public class Distributions {
                 DEFAULT_DISTRIBUTIONS = new Distributions(
                         loadDistribution( Resources.asCharSource( resource, Charsets.UTF_8 ) ) );
             } catch ( IOException e ) {
-                throw Throwables.propagate( e );
+                throw new RuntimeException(e);
             }
         }
         return DEFAULT_DISTRIBUTIONS;

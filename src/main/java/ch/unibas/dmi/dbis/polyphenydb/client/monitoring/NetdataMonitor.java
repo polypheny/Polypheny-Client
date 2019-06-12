@@ -45,9 +45,8 @@ public class NetdataMonitor implements Runnable {
     /**
      * @param url URL from which netdata results should be fetched
      * @param jsonStorage where you want the json to be written to
-     * @throws IOException if something goes wrong with the JSON reader/writer
      */
-    public NetdataMonitor( String url, File jsonStorage, List<String> options ) throws IOException {
+    public NetdataMonitor( String url, File jsonStorage, List<String> options ) {
         this.url = url;
         this.writer = new StreamWriter<>( SettableFuture.create(), jsonStorage, WorkerMonitorResult.class );
         this.jsonStorage = jsonStorage;
@@ -139,7 +138,7 @@ public class NetdataMonitor implements Runnable {
      *
      * We use a custom deserializer for the protobuf objects since the default GSON serializer & deserializer is incapable of properly handling protobuf maps
      */
-    public void sendMeasurements( StreamObserver<WorkerMonitorResult> responseObserver ) throws IOException {
+    public void sendMeasurements( StreamObserver<WorkerMonitorResult> responseObserver ) {
         stop();
         this.reader = new JsonStreamReader<>( jsonStorage, WorkerMonitorResult.class,
                 StorageGson.getGson() );

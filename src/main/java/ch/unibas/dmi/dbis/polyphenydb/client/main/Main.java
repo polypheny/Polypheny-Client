@@ -4,7 +4,6 @@ package ch.unibas.dmi.dbis.polyphenydb.client.main;
 import ch.unibas.dmi.dbis.polyphenydb.client.main.analysis.TPCCAnalysis;
 import com.github.rvesse.airline.annotations.Cli;
 import com.github.rvesse.airline.help.Help;
-import java.io.IOException;
 
 
 /**
@@ -17,7 +16,7 @@ import java.io.IOException;
         defaultCommand = Help.class)
 public class Main {
 
-    public static void main( String[] args ) throws IOException {
+    public static void main( String[] args ) {
         new com.github.rvesse.airline.Cli<Runnable>( Main.class ).parse( args ).run();
     }
 }

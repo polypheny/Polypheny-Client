@@ -41,6 +41,7 @@ public class ScenarioFactory {
     /**
      * Creates a {@link Scenario} from the {@link PolyphenyCdlOptions#scenario} stored in the job.
      */
+    @SuppressWarnings("JavadocReference")
     private static Scenario createScenario( PolyphenyJob polyphenyJob ) {
         PolyClientGRPC.Scenario scenario = polyphenyJob.getCdl().getEvaluation().getOptions().getScenario();
         switch ( scenario ) {

@@ -42,13 +42,13 @@ public class JDBCVoltDBConnector extends JDBCConnector {
 
 
     @Override
-    public void commitTransaction() throws ConnectionException {
+    public void commitTransaction() {
         // VoltDb does not support transactions, do nothing
     }
 
 
     @Override
-    public void abortTransaction() throws ConnectionException {
+    public void abortTransaction() {
         // VoltDb does not support transactions, do nothing
     }
 

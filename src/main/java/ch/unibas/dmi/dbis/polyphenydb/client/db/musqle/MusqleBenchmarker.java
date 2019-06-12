@@ -39,7 +39,7 @@ public abstract class MusqleBenchmarker {
     /**
      * Fire Query against Database.
      */
-    public abstract MUSQLEResultTuple genericQueryExecutor( final int queryID ) throws ConnectionException;
+    public abstract MUSQLEResultTuple genericQueryExecutor( final int queryID );
 
 
     public MusqleTransactionType getTypeForQueryID( int queryID ) {

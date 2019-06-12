@@ -1,10 +1,3 @@
-package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGenerators;
-
-/**
- * Created by manuelhuerbin on 29.04.17.
- */
-
-
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +12,9 @@ package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGener
  * limitations under the License.
  */
 
+package ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.TPCHPopulationGenerators;
+
+
 import static ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.objects.GenerateUtils.calculateRowCount;
 import static ch.unibas.dmi.dbis.polyphenydb.client.generator.tpch.objects.GenerateUtils.calculateStartIndex;
 import static com.google.common.base.Preconditions.checkArgument;
@@ -30,8 +26,7 @@ import com.google.common.collect.AbstractIterator;
 import java.util.Iterator;
 
 
-public class SupplierGenerator
-        implements Iterable<Supplier> {
+public class SupplierGenerator implements Iterable<Supplier> {
 
     public static final int SCALE_BASE = 10_000;
     public static final String BBB_BASE_TEXT = "Customer ";
@@ -53,13 +48,11 @@ public class SupplierGenerator
 
 
     public SupplierGenerator( double scaleFactor, int part, int partCount ) {
-        this( scaleFactor, part, partCount, Distributions.getDefaultDistributions(),
-                TextPool.getDefaultTestPool() );
+        this( scaleFactor, part, partCount, Distributions.getDefaultDistributions(), TextPool.getDefaultTestPool() );
     }
 
 
-    public SupplierGenerator( double scaleFactor, int part, int partCount,
-            Distributions distributions, TextPool textPool ) {
+    public SupplierGenerator( double scaleFactor, int part, int partCount, Distributions distributions, TextPool textPool ) {
         checkArgument( scaleFactor > 0, "scaleFactor must be greater than 0" );
         checkArgument( part >= 1, "part must be at least 1" );
         checkArgument( part <= partCount, "part must be less than or equal to part count" );
@@ -83,18 +76,14 @@ public class SupplierGenerator
     }
 
 
-    private static class SupplierGeneratorIterator
-            extends AbstractIterator<Supplier> {
+    private static class SupplierGeneratorIterator extends AbstractIterator<Supplier> {
 
-        private final RandomAlphaNumeric addressRandom = new RandomAlphaNumeric( 706178559,
-                ADDRESS_AVERAGE_LENGTH );
+        private final RandomAlphaNumeric addressRandom = new RandomAlphaNumeric( 706178559, ADDRESS_AVERAGE_LENGTH );
         private final RandomBoundedInt nationKeyRandom;
         private final RandomPhoneNumber phoneRandom = new RandomPhoneNumber( 884434366 );
-        private final RandomBoundedInt accountBalanceRandom = new RandomBoundedInt( 962338209,
-                ACCOUNT_BALANCE_MIN, ACCOUNT_BALANCE_MAX );
+        private final RandomBoundedInt accountBalanceRandom = new RandomBoundedInt( 962338209, ACCOUNT_BALANCE_MIN, ACCOUNT_BALANCE_MAX );
         private final RandomText commentRandom;
-        private final RandomBoundedInt bbbCommentRandom = new RandomBoundedInt( 202794285, 1,
-                SCALE_BASE );
+        private final RandomBoundedInt bbbCommentRandom = new RandomBoundedInt( 202794285, 1, SCALE_BASE );
         private final RandomInt bbbJunkRandom = new RandomInt( 263032577, 1 );
         private final RandomInt bbbOffsetRandom = new RandomInt( 715851524, 1 );
         private final RandomBoundedInt bbbTypeRandom = new RandomBoundedInt( 753643799, 0, 100 );
@@ -105,8 +94,7 @@ public class SupplierGenerator
         private long index;
 
 
-        private SupplierGeneratorIterator( Distributions distributions, TextPool textPool,
-                long startIndex, long rowCount ) {
+        private SupplierGeneratorIterator( Distributions distributions, TextPool textPool, long startIndex, long rowCount ) {
             this.startIndex = startIndex;
             this.rowCount = rowCount;
 
@@ -159,8 +147,7 @@ public class SupplierGenerator
 
                 // select random place for BBB comment
                 int noise = bbbJunkRandom.nextInt( 0, (comment.length() - BBB_COMMENT_LENGTH) );
-                int offset = bbbOffsetRandom
-                        .nextInt( 0, (comment.length() - (BBB_COMMENT_LENGTH + noise)) );
+                int offset = bbbOffsetRandom.nextInt( 0, (comment.length() - (BBB_COMMENT_LENGTH + noise)) );
 
                 // select complaint or recommendation
                 String type;
@@ -184,7 +171,8 @@ public class SupplierGenerator
 
             long nationKey = nationKeyRandom.nextValue();
 
-            return new Supplier( supplierKey,
+            return new Supplier(
+                    supplierKey,
                     supplierKey,
                     String.format( ENGLISH, "Supplier#%09d", supplierKey ),
                     addressRandom.nextValue(),

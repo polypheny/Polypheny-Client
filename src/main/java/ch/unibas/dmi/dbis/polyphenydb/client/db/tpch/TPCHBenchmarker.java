@@ -142,13 +142,13 @@ public abstract class TPCHBenchmarker {
     /**
      * Fire Query against Database.
      */
-    public abstract TPCHResultTuple genericQueryExecutor( final int queryID ) throws ConnectionException;
+    public abstract TPCHResultTuple genericQueryExecutor( final int queryID );
 
 
     /**
      * Fire Refresh Function against Database.
      */
-    public abstract TPCHResultTuple genericRefreshFunctionExecutor( final int refreshFunctionID ) throws ConnectionException;
+    public abstract TPCHResultTuple genericRefreshFunctionExecutor( final int refreshFunctionID );
 
 
     public TPCHTransactionType getTypeForQueryID( int queryID ) {

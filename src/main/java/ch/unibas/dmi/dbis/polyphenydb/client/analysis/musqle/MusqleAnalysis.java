@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -65,16 +66,12 @@ public class MusqleAnalysis {
         }
 
         JsonObject element = new JsonObject();
-        visualizationAnalyzers.forEach( musqleAnalyzer -> {
-            element.add( musqleAnalyzer.getClass().getSimpleName(), musqleAnalyzer.getResults() );
-        } );
+        visualizationAnalyzers.forEach( musqleAnalyzer -> element.add( musqleAnalyzer.getClass().getSimpleName(), musqleAnalyzer.getResults() ) );
 
-        fullAnalyzers.forEach( musqleAnalyzer -> {
-            element.add( musqleAnalyzer.getClass().getSimpleName(), musqleAnalyzer.getResults() );
-        } );
+        fullAnalyzers.forEach( musqleAnalyzer -> element.add( musqleAnalyzer.getClass().getSimpleName(), musqleAnalyzer.getResults() ) );
         File resultJSON = new File( outputPath, "analysis.json" );
         try {
-            JsonWriter writer = new JsonWriter( new OutputStreamWriter( new BufferedOutputStream( new FileOutputStream( resultJSON ) ), "UTF-8" ) );
+            JsonWriter writer = new JsonWriter( new OutputStreamWriter( new BufferedOutputStream( new FileOutputStream( resultJSON ) ), StandardCharsets.UTF_8 ) );
             writer.jsonValue( element.toString() );
             writer.close();
         } catch ( IOException e ) {

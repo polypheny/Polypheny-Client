@@ -207,7 +207,7 @@ public class TPCCScenario implements Scenario {
 
 
     /**
-     * Launches the TPC-C Workers, using {@link PolyphenyCdlParams#getWorkerURLs()}. The last worker will get handled seperately since the warehouses he gets need to be the remaining ones.
+     * Launches the TPC-C Workers, using {@link PolyphenyCdlParams#getWorkerURLs()}. The last worker will get handled separately since the warehouses he gets need to be the remaining ones.
      */
     private void launchWorkers() {
         int noWorkers = job.getEvaluation().getParams().getWorkers();
@@ -235,14 +235,18 @@ public class TPCCScenario implements Scenario {
             Pair pair = Pair( (i * warehousePerWorker) + 1, ((i + 1) * warehousePerWorker) + 1 );
             logger.trace( "Worker @ URL {} with index {} gets {}", workerURL, i, pair );
 
-            //Generate WorkerMessage
-            LaunchWorkerMessage workerMessage = TPCCWorkerMessage( job.getEvaluation().getDbms().getHost(), job.getEvaluation().getDbms().getPort(), job.getEvaluation().getDbms().getDatabase(), job.getEvaluation().getDbms().getUsername(), job.getEvaluation().getDbms().getPassword(),
-                    job.getEvaluation().getOptions().getSystem(), job.getEvaluation().getOptions().getAccessMethod(), pair, TPCCConfig.TERMINALS_PER_DISTRICT, COL_I_ID_MEASUREMENT, CC_LAST_MEASUREMENT, CC_ID_MEASUREMENT, noWarehouses,
-                    job.getEvaluation().getOptions().getTpccTerminalThink(), Optional.of( 1_000L ), Optional.empty() );  //1= terminals per district
-            worker.launchWorker( workerMessage );
+            generateWorkerMessage( noWarehouses, worker, pair );
             //TODO Sleep parameters
         }
         launchLastWorker( workerURLs, warehousePerWorker );
+    }
+
+
+    private void generateWorkerMessage( int noWarehouses, WorkerStub worker, Pair pair ) {
+        LaunchWorkerMessage workerMessage = TPCCWorkerMessage( job.getEvaluation().getDbms().getHost(), job.getEvaluation().getDbms().getPort(), job.getEvaluation().getDbms().getDatabase(), job.getEvaluation().getDbms().getUsername(), job.getEvaluation().getDbms().getPassword(),
+                job.getEvaluation().getOptions().getSystem(), job.getEvaluation().getOptions().getAccessMethod(), pair, TPCCConfig.TERMINALS_PER_DISTRICT, COL_I_ID_MEASUREMENT, CC_LAST_MEASUREMENT, CC_ID_MEASUREMENT, noWarehouses,
+                job.getEvaluation().getOptions().getTpccTerminalThink(), Optional.of( 1_000L ), Optional.empty() );  //1= terminals per district
+        worker.launchWorker( workerMessage );
     }
 
 
@@ -259,12 +263,7 @@ public class TPCCScenario implements Scenario {
         logger.trace( "Worker @ URL {} with index {} gets {}", workerURL, workerURLs.length - 1, pair );
 
         //Generate WorkerMessage
-        LaunchWorkerMessage workerMessage =
-                TPCCWorkerMessage( job.getEvaluation().getDbms().getHost(), job.getEvaluation().getDbms().getPort(), job.getEvaluation().getDbms().getDatabase(), job.getEvaluation().getDbms().getUsername(), job.getEvaluation().getDbms().getPassword(),
-                        job.getEvaluation().getOptions().getSystem(), job.getEvaluation().getOptions().getAccessMethod(), pair, TPCCConfig.TERMINALS_PER_DISTRICT, COL_I_ID_MEASUREMENT, CC_LAST_MEASUREMENT,
-                        CC_ID_MEASUREMENT, noWarehouses, job.getEvaluation().getOptions().getTpccTerminalThink(), Optional.of( 1_000L ), Optional.empty() );  //1= terminals per district
-        //TODO Sleep parameters
-        worker.launchWorker( workerMessage );
+        generateWorkerMessage( noWarehouses, worker, pair );
     }
 
 
