@@ -39,15 +39,15 @@ public class DiscreteGenerator extends Generator<String> {
             sum += p.weight;
         }
 
-        double val = Utils.random().nextDouble();
+        double value = Utils.random().nextDouble();
 
         for ( Pair p : values ) {
             double pw = p.weight / sum;
-            if ( val < pw ) {
+            if ( value < pw ) {
                 return p.value;
             }
 
-            val -= pw;
+            value -= pw;
         }
 
         throw new AssertionError( "oops. should not get here." );

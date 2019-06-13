@@ -45,24 +45,24 @@ public final class Utils {
     /**
      * Hash an integer value.
      */
-    public static long hash( long val ) {
-        return fnvhash64( val );
+    public static long hash( long value ) {
+        return fnvhash64( value );
     }
 
 
     /**
      * 64 bit FNV hash. Produces more "random" hashes than (say) String.hashCode().
      *
-     * @param val The value to hash.
+     * @param value The value to hash.
      * @return The hash value
      */
-    public static long fnvhash64( long val ) {
+    public static long fnvhash64( long value ) {
         //from http://en.wikipedia.org/wiki/Fowler_Noll_Vo_hash
         long hashval = FNV_OFFSET_BASIS_64;
 
         for ( int i = 0; i < 8; i++ ) {
-            long octet = val & 0x00ff;
-            val = val >> 8;
+            long octet = value & 0x00ff;
+            value = value >> 8;
 
             hashval = hashval ^ octet;
             hashval = hashval * FNV_PRIME_64;
@@ -95,19 +95,19 @@ public final class Utils {
     /**
      * Writes a big-endian 8-byte long at an offset in the given array.
      *
-     * @param val The value to encode.
+     * @param value The value to encode.
      * @throws IndexOutOfBoundsException if the byte array is too small.
      */
-    public static byte[] longToBytes( final long val ) {
+    public static byte[] longToBytes( final long value ) {
         final byte[] bytes = new byte[8];
-        bytes[0] = (byte) (val >>> 56);
-        bytes[1] = (byte) (val >>> 48);
-        bytes[2] = (byte) (val >>> 40);
-        bytes[3] = (byte) (val >>> 32);
-        bytes[4] = (byte) (val >>> 24);
-        bytes[5] = (byte) (val >>> 16);
-        bytes[6] = (byte) (val >>> 8);
-        bytes[7] = (byte) (val >>> 0);
+        bytes[0] = (byte) (value >>> 56);
+        bytes[1] = (byte) (value >>> 48);
+        bytes[2] = (byte) (value >>> 40);
+        bytes[3] = (byte) (value >>> 32);
+        bytes[4] = (byte) (value >>> 24);
+        bytes[5] = (byte) (value >>> 16);
+        bytes[6] = (byte) (value >>> 8);
+        bytes[7] = (byte) (value >>> 0);
         return bytes;
     }
 
@@ -133,11 +133,11 @@ public final class Utils {
     /**
      * Encodes the double value as an 8 byte array.
      *
-     * @param val The double value to encode.
+     * @param value The double value to encode.
      * @return A byte array of length 8.
      */
-    public static byte[] doubleToBytes( final double val ) {
-        return longToBytes( Double.doubleToRawLongBits( val ) );
+    public static byte[] doubleToBytes( final double value ) {
+        return longToBytes( Double.doubleToRawLongBits( value ) );
     }
 
 

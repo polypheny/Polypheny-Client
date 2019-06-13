@@ -28,6 +28,7 @@ package ch.unibas.dmi.dbis.polyphenydb.client.main;
 import com.github.rvesse.airline.annotations.Arguments;
 import com.github.rvesse.airline.annotations.Command;
 import com.github.rvesse.airline.annotations.Option;
+import java.io.Console;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -40,7 +41,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.Scanner;
-import lombok.val;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.slf4j.Logger;
@@ -67,11 +67,11 @@ public class ConsoleCommand extends AbstractCommand {
         System.setProperty( "logFilename", "console" );
         org.apache.logging.log4j.core.LoggerContext ctx = (org.apache.logging.log4j.core.LoggerContext) LogManager.getContext( false );
         log = LoggerFactory.getLogger( ConsoleCommand.class );
-        val stopWatch = new StopWatch();
+        final StopWatch stopWatch = new StopWatch();
 
         final PrintWriter writer;
         final Scanner reader;
-        val c = System.console();
+        final Console c = System.console();
         if ( c == null ) {
             reader = new Scanner( System.in );
             writer = new PrintWriter( System.out );

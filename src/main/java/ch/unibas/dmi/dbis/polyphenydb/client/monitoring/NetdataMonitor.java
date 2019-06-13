@@ -136,7 +136,7 @@ public class NetdataMonitor implements Runnable {
     /**
      * Streams the measurements, reading from storage. Stops also the netdata-monitor
      *
-     * We use a custom deserializer for the protobuf objects since the default GSON serializer & deserializer is incapable of properly handling protobuf maps
+     * We use a custom deserializer for the protobuf objects since the default GSON serializer and deserializer is incapable of properly handling protobuf maps
      */
     public void sendMeasurements( StreamObserver<WorkerMonitorResult> responseObserver ) {
         stop();

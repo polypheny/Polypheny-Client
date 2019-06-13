@@ -61,7 +61,7 @@ public class SimpleJdbcDBClient extends DB {
     public static final String CONNECTION_PASSWD = "db.passwd";
 
     /**
-     * The batch size for batched inserts. Set to >0 to use batching
+     * The batch size for batched inserts. Set to {@literal >0 } to use batching
      */
     public static final String DB_BATCH_SIZE = "db.batchsize";
 
