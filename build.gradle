@@ -59,7 +59,7 @@ tasks.withType(JavaCompile) {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-def protobufVersion = "3.8.0"
+def protobufVersion = "3.6.1"
 def grpcVersion = "1.21.0"
 
 
@@ -75,7 +75,7 @@ dependencies {
     //runtime files("libs/Polypheny-DB-JDBC-Driver-1.0-SNAPSHOT.jar")
     //runtime files("libs/postgresql-42.0.0.jar")
     //compile group: "ch.unibas.dmi.dbis.polyphenydb", name: "polypheny-db-jdbc-driver", version: "0.2.0-SNAPSHOT"
-    compile (group: "org.apache.calcite.avatica", name: "avatica-core", version:"1.13.0"){exclude group: "com.google.protobuf"}
+    compile (group: 'ch.unibas.dmi.dbis.polyphenydb', name: 'polyphenydb-jdbc-driver', version: '1.0-SNAPSHOT'){exclude group: "com.google.protobuf"}
 
     compile group: "org.mariadb.jdbc", name: "mariadb-java-client", version: "1.8.0"
     compile group: "monetdb", name: "monetdb-jdbc", version: "2.28"
@@ -238,13 +238,16 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier "javadoc"
     from javadoc.destinationDir
 }
+shadowJar {
+    classifier = ''
+}
+assemble.dependsOn shadowJar
 artifacts {
-    archives jar // regular jar containing only the compiled source
+    //archives jar // regular jar containing only the compiled source
+    archives shadowJar // fat jar which additionally contains all dependencies
     archives sourcesJar // jar file containing the java doc files
     archives javadocJar // jar file containing the source files
 }
-
-
 
 
 
