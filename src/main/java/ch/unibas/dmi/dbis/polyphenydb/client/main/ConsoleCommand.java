@@ -143,8 +143,50 @@ public class ConsoleCommand extends AbstractCommand {
                             }
                         }
                     } else if ( line.startsWith( "!" ) ) {
+                        if ( line.toLowerCase().startsWith( "!databases" ) ) {
+                            ResultSet rs = connection.getMetaData().getCatalogs();
+                            writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
+                            rs.close();
+                        }
+                        if ( line.toLowerCase().startsWith( "!schemas" ) ) {
+                            final String[] params = line.split( " " );
+                            ResultSet rs;
+                            if ( params.length == 2 ) {
+                                rs = connection.getMetaData().getSchemas( null, params[1] );
+                            } else {
+                                rs = connection.getMetaData().getSchemas( null, null );
+                            }
+                            writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
+                            rs.close();
+                        }
                         if ( line.toLowerCase().startsWith( "!tables" ) ) {
-                            ResultSet rs = connection.getMetaData().getTables( null, null, "%", null );
+                            final String[] params = line.split( " " );
+                            ResultSet rs;
+                            if ( params.length == 2 ) {
+                                rs = connection.getMetaData().getTables( null, params[1], "%", null );
+                            } else if ( params.length == 3 ) {
+                                rs = connection.getMetaData().getTables( null, params[1], params[2], null );
+                            } else {
+                                rs = connection.getMetaData().getTables( null, null, "%", null );
+                            }
+                            writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
+                            rs.close();
+                        }
+                        if ( line.toLowerCase().startsWith( "!columns" ) ) {
+                            final String[] params = line.split( " " );
+                            ResultSet rs;
+                            if ( params.length == 2 ) {
+                                rs = connection.getMetaData().getColumns( null, params[1], "%", null );
+                            } else if ( params.length == 3 ) {
+                                rs = connection.getMetaData().getColumns( null, params[1], params[2], null );
+                            } else {
+                                rs = connection.getMetaData().getColumns( null, null, "%", null );
+                            }
+                            writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
+                            rs.close();
+                        }
+                        if ( line.toLowerCase().startsWith( "!tabletypes" ) ) {
+                            ResultSet rs = connection.getMetaData().getTableTypes();
                             writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
                             rs.close();
                         }
@@ -198,7 +240,6 @@ public class ConsoleCommand extends AbstractCommand {
             }
         }
     }
-
 
 
     public static final int DEFAULT_MAX_ROWS = 25;
