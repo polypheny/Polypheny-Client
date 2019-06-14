@@ -5,23 +5,23 @@
             <PatternLayout pattern="%d{HH:mm:ss.SSS} %level %C{1} - %msg%n"/>
             <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
         </Console>
-        <File name="NamedFile"
-            fileName="logs/polypheny-client-${date:MM-dd-HH:mm}-${sys:logFilename}.log">
+        <File name="File"
+            fileName="logs/polyphenydb-client-${date:YYYY-MM-dd-HH-mm}.log">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %level %C{1} - %msg%n"/>
         </File>
     </Appenders>
     <Loggers>
         <logger name="io" level="ERROR">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="NamedFile"/>
+            <AppenderRef ref="File"/>
         </logger>
         <logger name="org" level="INFO">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="NamedFile"/>
+            <AppenderRef ref="File"/>
         </logger>
         <logger name="ch" level="ERROR">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="NamedFile"/>
+            <AppenderRef ref="File"/>
         </logger>
         <logger name="ch.unibas.dmi.dbis.polyphenydb" level="INFO">
         </logger>
