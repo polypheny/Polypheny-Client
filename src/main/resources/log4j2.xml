@@ -23,9 +23,9 @@
             <AppenderRef ref="Console"/>
             <AppenderRef ref="File"/>
         </logger>
-        <logger name="ch.unibas.dmi.dbis.polyphenydb" level="INFO">
+        <logger name="ch.unibas.dmi.dbis.polyphenydb" level="ERROR">
         </logger>
-        <logger name="ch.unibas.dmi.dbis.chronos" level="DEBUG">
+        <logger name="ch.unibas.dmi.dbis.chronos" level="INFO">
         </logger>
         <Root level="info"/>
     </Loggers>

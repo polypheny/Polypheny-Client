@@ -42,7 +42,6 @@ import java.util.Arrays;
 import java.util.Properties;
 import java.util.Scanner;
 import org.apache.commons.lang3.time.StopWatch;
-import org.apache.logging.log4j.LogManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,25 +63,28 @@ public class ConsoleCommand extends AbstractCommand {
 
 
     public void run() {
-        System.setProperty( "logFilename", "console" );
-        org.apache.logging.log4j.core.LoggerContext ctx = (org.apache.logging.log4j.core.LoggerContext) LogManager.getContext( false );
         log = LoggerFactory.getLogger( ConsoleCommand.class );
         final StopWatch stopWatch = new StopWatch();
 
         final PrintWriter writer;
+        final PrintWriter errorWriter;
         final Scanner reader;
         final Console c = System.console();
         if ( c == null ) {
             reader = new Scanner( System.in );
             writer = new PrintWriter( System.out );
+            errorWriter = new PrintWriter( System.err );
             if ( verbose ) {
                 writer.println( "*** Using System.out ***" );
+                errorWriter.println( "*** Using System.err ***" );
             }
         } else {
             reader = new Scanner( c.reader() );
             writer = new PrintWriter( c.writer() );
+            errorWriter = new PrintWriter( c.writer() );
             if ( verbose ) {
                 writer.println( "*** Using System.console() ***" );
+                errorWriter.println( "*** Using System.console() ***" );
             }
         }
 
@@ -162,7 +164,11 @@ public class ConsoleCommand extends AbstractCommand {
                                 stopWatch.stop();
                                 final ResultSet rs = statement.getResultSet();
 
-                                writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
+                                if ( line.toLowerCase().startsWith( "explain plan for" ) ) {
+                                    writer.println( processExplainPlanResultSet( rs ) );
+                                } else {
+                                    writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
+                                }
                                 rs.close();
                             } else {
                                 stopWatch.stop();
@@ -174,6 +180,8 @@ public class ConsoleCommand extends AbstractCommand {
                             if ( log.isInfoEnabled() ) {
                                 log.info( "", ex );
                             }
+                            errorWriter.println( ex.getMessage() + "\n" );
+                            errorWriter.flush();
                         }
                     }
 
@@ -190,6 +198,7 @@ public class ConsoleCommand extends AbstractCommand {
             }
         }
     }
+
 
 
     public static final int DEFAULT_MAX_ROWS = 25;
@@ -261,7 +270,49 @@ public class ConsoleCommand extends AbstractCommand {
     }
 
 
-    private static String getHorizontalLine( Column[] columns ) {
+    private String processExplainPlanResultSet( ResultSet rs ) {
+        StringBuilder sb = new StringBuilder();
+
+        try {
+            ResultSetMetaData rsmd = rs.getMetaData();
+            if ( rsmd.getColumnCount() != 1 ) {
+                // Error
+            }
+            if ( !rs.next() ) {
+                // Error
+            }
+
+            // get Plan
+            final String plan = rs.getString( 1 );
+            final String[] planLines = plan.split( "[\\r\\n]+" );
+
+            // Get max line length
+            int maxLineLength = 12;
+            for ( String planLine : planLines ) {
+                if ( planLine.length() > maxLineLength ) {
+                    maxLineLength = planLine.length();
+                }
+            }
+            maxLineLength += 4; // Add space
+
+            // Print Plan
+            sb.append( getHorizontalLine( maxLineLength ) );
+            sb.append( printLine( "QUERY PLAN", maxLineLength ) );
+            sb.append( getHorizontalLine( maxLineLength ) );
+            for ( String planLine : planLines ) {
+                sb.append( printLine( planLine, maxLineLength ) );
+            }
+            sb.append( getHorizontalLine( maxLineLength ) );
+        } catch ( SQLException e ) {
+            if ( log.isErrorEnabled() ) {
+                log.error( "", e );
+            }
+        }
+        return sb.toString();
+    }
+
+
+    private static String getHorizontalLine( final Column[] columns ) {
         StringBuilder sb = new StringBuilder();
 
         for ( Column column : columns ) {
@@ -276,21 +327,49 @@ public class ConsoleCommand extends AbstractCommand {
     }
 
 
+    private static String getHorizontalLine( final int length ) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append( "+" );
+        for ( int i = 0; i < length; i++ ) {
+            sb.append( "-" );
+        }
+        sb.append( "+\n" );
+
+        return sb.toString();
+    }
+
+
+    private static String printLine( final String text, final int lineLength ) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append( "| " );
+        sb.append( text );
+        for ( int i = text.length(); i < lineLength - 2; i++ ) {
+            sb.append( " " );
+        }
+        sb.append( " |\n" );
+
+        return sb.toString();
+    }
+
+
     private static class Column {
 
         private int maxLength = 0;
         private ArrayList<String> data = new ArrayList<>();
 
 
-        void addData( String dataStr, int maxLength ) {
+        void addData( final String dataStr, final int maxLength ) {
+            String s = dataStr;
             if ( dataStr.length() > maxLength ) {
-                dataStr = dataStr.substring( 0, maxLength );
-                dataStr += CROP_STRING;
+                s = dataStr.substring( 0, maxLength );
+                s += CROP_STRING;
             }
-            if ( this.maxLength < dataStr.length() ) {
-                this.maxLength = dataStr.length();
+            if ( this.maxLength < s.length() ) {
+                this.maxLength = s.length();
             }
-            data.add( dataStr );
+            data.add( s );
         }
 
 

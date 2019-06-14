@@ -228,6 +228,7 @@ jar {
         attributes "Manifest-Version": "1.0"
         attributes "Copyright": "Databases and Information Systems Group, Department Mathematics and Computer Science, University of Basel, Switzerland"
         attributes "Version": "$version"
+        attributes 'Main-Class': 'ch.unibas.dmi.dbis.polyphenydb.client.main.Main'
     }
 }
 task sourcesJar(type: Jar, dependsOn: classes) {
