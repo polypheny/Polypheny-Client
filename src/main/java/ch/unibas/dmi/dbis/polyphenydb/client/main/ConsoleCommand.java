@@ -89,8 +89,8 @@ public class ConsoleCommand extends AbstractCommand {
         }
 
         try {
-            //Class.forName( "ch.unibas.dmi.dbis.polyphenydb.jdbc.Driver" );
-            Class.forName( "org.apache.calcite.avatica.remote.Driver" );
+            Class.forName( "ch.unibas.dmi.dbis.polyphenydb.jdbc.Driver" );
+            //Class.forName( "org.apache.calcite.avatica.remote.Driver" );
         } catch ( ClassNotFoundException e ) {
             if ( log.isErrorEnabled() ) {
                 log.error( "Could not load Polypheny-DB's driver", e );
@@ -101,9 +101,11 @@ public class ConsoleCommand extends AbstractCommand {
 
         final Properties connectionProperties = new Properties();
         connectionProperties.setProperty( "user", "pa" );
+        connectionProperties.setProperty( "wire_protocol", "PROTO3" );
         //connectionProperties.setProperty( "password", "" );
         //final String url = "jdbc:polypheny://" + hostname + "/";+
-        final String url = "jdbc:avatica:remote:url=http://localhost:20591;serialization=protobuf";
+        //final String url = "jdbc:avatica:remote:url=http://localhost:20591;serialization=protobuf";
+        final String url = "jdbc:polypheny://localhost:20591";
         try ( final Connection connection = DriverManager.getConnection( url, connectionProperties ) ) {
 
             try ( final Statement statement = connection.createStatement() ) {
