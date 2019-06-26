@@ -208,7 +208,7 @@ public class ConsoleCommand extends AbstractCommand {
                                 stopWatch.stop();
                                 final ResultSet rs = statement.getResultSet();
 
-                                if ( line.toLowerCase().startsWith( "explain plan for" ) ) {
+                                if ( line.toLowerCase().startsWith( "explain plan " ) ) {
                                     writer.println( processExplainPlanResultSet( rs ) );
                                 } else {
                                     writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
