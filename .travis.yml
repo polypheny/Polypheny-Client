@@ -11,8 +11,6 @@ matrix:
             os: linux
         -   jdk: openjdk8
             os: linux
-        -   jdk: openjdk8
-            os: windows
         -   jdk: openjdk9
             os: linux
         -   jdk: openjdk10
