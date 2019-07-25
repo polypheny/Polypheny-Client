@@ -122,6 +122,7 @@ public class ConsoleCommand extends AbstractCommand {
                         continue;
                     }
 
+                    stopWatch.start();
                     if ( line.equalsIgnoreCase( "exit" ) ) {
                         break;
                     } else if ( line.toLowerCase().startsWith( "set" ) || line.toLowerCase().startsWith( "get" ) ) {
@@ -192,6 +193,14 @@ public class ConsoleCommand extends AbstractCommand {
                             writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
                             rs.close();
                         }
+                        if ( line.toLowerCase().startsWith( "!commit" ) ) {
+                            connection.commit();
+                            writer.println( "Successfully committed changes!" );
+                        }
+                        if ( line.toLowerCase().startsWith( "!rollback" ) ) {
+                            connection.rollback();
+                            writer.println( "Successfully rollbacked changes!" );
+                        }
                     } else if ( line.toLowerCase().startsWith( "add to batch : " ) ) {
                         final String sql = line.substring( line.indexOf( ':' ) + 1 ).trim();
                         statement.addBatch( sql );
@@ -202,8 +211,6 @@ public class ConsoleCommand extends AbstractCommand {
                         writer.println( "NUMBER OF ROWS AFFECTED: " + Arrays.toString( result ) );
                     } else {
                         try {
-
-                            stopWatch.start();
                             if ( statement.execute( line ) ) {
                                 stopWatch.stop();
                                 final ResultSet rs = statement.getResultSet();
@@ -218,7 +225,6 @@ public class ConsoleCommand extends AbstractCommand {
                                 stopWatch.stop();
                                 writer.println( "NUMBER OF ROWS AFFECTED: " + statement.getUpdateCount() );
                             }
-
 
                         } catch ( SQLException ex ) {
                             if ( log.isInfoEnabled() ) {
