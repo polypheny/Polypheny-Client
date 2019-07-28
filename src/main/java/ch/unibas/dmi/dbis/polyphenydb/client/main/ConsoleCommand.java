@@ -193,6 +193,22 @@ public class ConsoleCommand extends AbstractCommand {
                             writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
                             rs.close();
                         }
+                        if ( line.toLowerCase().startsWith( "!types" ) ) {
+                            ResultSet rs = connection.getMetaData().getTypeInfo();
+                            writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
+                            rs.close();
+                        }
+                        if ( line.toLowerCase().startsWith( "!primarykey" ) ) {
+                            final String[] params = line.split( " " );
+                            if ( params.length == 4 ) {
+                                ResultSet rs;
+                                rs = connection.getMetaData().getPrimaryKeys( params[1], params[2], params[3] );
+                                writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
+                                rs.close();
+                            } else {
+                                writer.println( "You need to specify the name of the table: [ > !primarykey DATABASE_NAME SCHEMA_NAME TABLE_NAME ]" );
+                            }
+                        }
                         if ( line.toLowerCase().startsWith( "!commit" ) ) {
                             connection.commit();
                             writer.println( "Successfully committed changes!" );
