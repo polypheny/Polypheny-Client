@@ -150,8 +150,7 @@ public class ConsoleCommand extends AbstractCommand {
                             ResultSet rs = connection.getMetaData().getCatalogs();
                             writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
                             rs.close();
-                        }
-                        if ( line.toLowerCase().startsWith( "!schemas" ) ) {
+                        } else if ( line.toLowerCase().startsWith( "!schemas" ) ) {
                             final String[] params = line.split( " " );
                             ResultSet rs;
                             if ( params.length == 2 ) {
@@ -161,8 +160,7 @@ public class ConsoleCommand extends AbstractCommand {
                             }
                             writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
                             rs.close();
-                        }
-                        if ( line.toLowerCase().startsWith( "!tables" ) ) {
+                        } else if ( line.toLowerCase().startsWith( "!tables" ) ) {
                             final String[] params = line.split( " " );
                             ResultSet rs;
                             if ( params.length == 2 ) {
@@ -174,8 +172,7 @@ public class ConsoleCommand extends AbstractCommand {
                             }
                             writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
                             rs.close();
-                        }
-                        if ( line.toLowerCase().startsWith( "!columns" ) ) {
+                        } else if ( line.toLowerCase().startsWith( "!columns" ) ) {
                             final String[] params = line.split( " " );
                             ResultSet rs;
                             if ( params.length == 2 ) {
@@ -187,18 +184,15 @@ public class ConsoleCommand extends AbstractCommand {
                             }
                             writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
                             rs.close();
-                        }
-                        if ( line.toLowerCase().startsWith( "!tabletypes" ) ) {
+                        } else if ( line.toLowerCase().startsWith( "!tabletypes" ) ) {
                             ResultSet rs = connection.getMetaData().getTableTypes();
                             writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
                             rs.close();
-                        }
-                        if ( line.toLowerCase().startsWith( "!types" ) ) {
+                        } else if ( line.toLowerCase().startsWith( "!types" ) ) {
                             ResultSet rs = connection.getMetaData().getTypeInfo();
                             writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
                             rs.close();
-                        }
-                        if ( line.toLowerCase().startsWith( "!primarykey" ) ) {
+                        } else if ( line.toLowerCase().startsWith( "!primarykey" ) ) {
                             final String[] params = line.split( " " );
                             if ( params.length == 4 ) {
                                 ResultSet rs;
@@ -208,14 +202,44 @@ public class ConsoleCommand extends AbstractCommand {
                             } else {
                                 writer.println( "You need to specify the name of the table: [ > !primarykey DATABASE_NAME SCHEMA_NAME TABLE_NAME ]" );
                             }
-                        }
-                        if ( line.toLowerCase().startsWith( "!commit" ) ) {
+                        } else if ( line.toLowerCase().startsWith( "!importedkeys" ) ) {
+                            final String[] params = line.split( " " );
+                            if ( params.length == 4 ) {
+                                ResultSet rs;
+                                rs = connection.getMetaData().getImportedKeys( params[1], params[2], params[3] );
+                                writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
+                                rs.close();
+                            } else {
+                                writer.println( "You need to specify the name of the table: [ > !importedkeys DATABASE_NAME SCHEMA_NAME TABLE_NAME ]" );
+                            }
+                        } else if ( line.toLowerCase().startsWith( "!exportedkeys" ) ) {
+                            final String[] params = line.split( " " );
+                            if ( params.length == 4 ) {
+                                ResultSet rs;
+                                rs = connection.getMetaData().getExportedKeys( params[1], params[2], params[3] );
+                                writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
+                                rs.close();
+                            } else {
+                                writer.println( "You need to specify the name of the table: [ > !exportedkeys DATABASE_NAME SCHEMA_NAME TABLE_NAME ]" );
+                            }
+                        } else if ( line.toLowerCase().startsWith( "!indexinfo" ) ) {
+                            final String[] params = line.split( " " );
+                            if ( params.length == 6 ) {
+                                ResultSet rs;
+                                rs = connection.getMetaData().getIndexInfo( params[1], params[2], params[3], Boolean.parseBoolean( params[4] ), Boolean.parseBoolean( params[5] ) );
+                                writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
+                                rs.close();
+                            } else {
+                                writer.println( "You need to specify the name of the table: [ > !getIndexInfo DATABASE_NAME SCHEMA_NAME TABLE_NAME UNIQUE APPROXIMATE ]" );
+                            }
+                        } else if ( line.toLowerCase().startsWith( "!commit" ) ) {
                             connection.commit();
                             writer.println( "Successfully committed changes!" );
-                        }
-                        if ( line.toLowerCase().startsWith( "!rollback" ) ) {
+                        } else if ( line.toLowerCase().startsWith( "!rollback" ) ) {
                             connection.rollback();
                             writer.println( "Successfully rollbacked changes!" );
+                        } else {
+                            writer.println( "Unknown command: " + line.toLowerCase() );
                         }
                     } else if ( line.toLowerCase().startsWith( "add to batch : " ) ) {
                         final String sql = line.substring( line.indexOf( ':' ) + 1 ).trim();
