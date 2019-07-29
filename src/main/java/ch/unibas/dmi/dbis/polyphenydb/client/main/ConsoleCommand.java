@@ -224,7 +224,7 @@ public class ConsoleCommand extends AbstractCommand {
                             }
                         } else if ( line.toLowerCase().startsWith( "!indexinfo" ) ) {
                             final String[] params = line.split( " " );
-                            if ( params.length == 6 ) {
+                            if ( params.length == 5 ) {
                                 ResultSet rs;
                                 rs = connection.getMetaData().getIndexInfo( params[1], params[2], params[3], Boolean.parseBoolean( params[4] ), false );
                                 writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
