@@ -226,11 +226,11 @@ public class ConsoleCommand extends AbstractCommand {
                             final String[] params = line.split( " " );
                             if ( params.length == 6 ) {
                                 ResultSet rs;
-                                rs = connection.getMetaData().getIndexInfo( params[1], params[2], params[3], Boolean.parseBoolean( params[4] ), Boolean.parseBoolean( params[5] ) );
+                                rs = connection.getMetaData().getIndexInfo( params[1], params[2], params[3], Boolean.parseBoolean( params[4] ), false );
                                 writer.println( processResultSet( rs, Integer.MAX_VALUE, DEFAULT_MAX_DATA_LENGTH ) );
                                 rs.close();
                             } else {
-                                writer.println( "You need to specify the name of the table: [ > !getIndexInfo DATABASE_NAME SCHEMA_NAME TABLE_NAME UNIQUE APPROXIMATE ]" );
+                                writer.println( "You need to specify the name of the table: [ > !getIndexInfo DATABASE_NAME SCHEMA_NAME TABLE_NAME UNIQUE ]" );
                             }
                         } else if ( line.toLowerCase().startsWith( "!commit" ) ) {
                             connection.commit();
