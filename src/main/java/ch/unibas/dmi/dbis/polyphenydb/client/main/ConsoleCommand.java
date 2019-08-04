@@ -55,6 +55,9 @@ public class ConsoleCommand extends AbstractCommand {
 
     private static Logger log;
 
+    // Weather to print lines between the rows in a result set
+    private static final boolean PRINT_INNER_LINES = false;
+
     @Arguments(title = { "hostname" }, description = "Polypheny-DB hostname or IP address")
     private String hostname = "localhost";
 
@@ -340,7 +343,9 @@ public class ConsoleCommand extends AbstractCommand {
             // build table
             String horizontalLine = getHorizontalLine( columns );
             for ( int rowIndex = 0; rowIndex <= totalPrintRows; rowIndex++ ) {
-                sb.append( horizontalLine );
+                if ( PRINT_INNER_LINES || rowIndex < 2 ) {
+                    sb.append( horizontalLine );
+                }
                 for ( int columnIndex = 0; columnIndex < totalColumns; columnIndex++ ) {
                     String line = columns[columnIndex].getData( rowIndex );
                     sb.append( String.format( "| %" + columns[columnIndex].maxLength + "s ", line ) );
