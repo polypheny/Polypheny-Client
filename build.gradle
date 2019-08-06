@@ -29,8 +29,8 @@ buildscript {
 
 repositories {
     maven {
-        // DBIS Artifactory
-        url "https://dbis-artifactory.dmi.unibas.ch/maven2/"
+        // DBIS Nexus
+        url "https://dbis-nexus.dmi.unibas.ch/repository/maven2/"
     }
     maven {
         url "https://clojars.org/repo/"
