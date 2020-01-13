@@ -1,11 +1,11 @@
 
-group "ch.unibas.dmi.dbis.polyphenydb-client"
+group "org.polypheny"
 
 
 def versionMajor = 1
 def versionMinor = 0
-def versionQualifier = "SNAPSHOT"
-version = versionMajor + "." + versionMinor + "-" + versionQualifier
+def versionQualifier = "-SNAPSHOT"
+version = versionMajor + "." + versionMinor + versionQualifier
 
 
 buildscript {
@@ -22,12 +22,13 @@ buildscript {
         // Google Protocol Buffers (https://github.com/google/protobuf-gradle-plugin)
         classpath group: "com.google.protobuf", name: "protobuf-gradle-plugin", version: "0.8.7"
         // Lombok (https://plugins.gradle.org/plugin/io.freefair.lombok)
-        //classpath group: "io.freefair.gradle", name: "lombok-plugin", version: "3.6.6"
+        classpath group: "io.freefair.gradle", name: "lombok-plugin", version: "4.1.6"
     }
 }
 
 
 repositories {
+    mavenLocal()
     maven {
         // DBIS Nexus
         url "https://dbis-nexus.dmi.unibas.ch/repository/maven2/"
@@ -47,7 +48,7 @@ apply plugin: "java"
 apply plugin: "maven"
 apply plugin: "idea"
 apply plugin: "com.google.protobuf"
-//apply plugin: "io.freefair.lombok"
+apply plugin: "io.freefair.lombok"
 apply plugin: "com.github.johnrengelman.shadow"
 
 
@@ -80,8 +81,7 @@ dependencies {
     ////// JDBC
     //runtime files("libs/Polypheny-DB-JDBC-Driver-1.0-SNAPSHOT.jar")
     //runtime files("libs/postgresql-42.0.0.jar")
-    //compile group: "ch.unibas.dmi.dbis.polyphenydb", name: "polypheny-db-jdbc-driver", version: "0.2.0-SNAPSHOT"
-    compile (group: 'ch.unibas.dmi.dbis.polyphenydb', name: 'polyphenydb-jdbc-driver', version: '1.0-SNAPSHOT'){exclude group: "com.google.protobuf"}
+    compile (group: 'org.polypheny', name: 'polypheny-jdbc-driver', version: '1.0-SNAPSHOT'){exclude group: "com.google.protobuf"}
 
     compile group: "org.mariadb.jdbc", name: "mariadb-java-client", version: "1.8.0"
     compile group: "monetdb", name: "monetdb-jdbc", version: "2.28"
@@ -156,7 +156,7 @@ def generatedDirName = "${project.buildDir}/generated"
 sourceSets {
     main {
         java {
-            srcDirs = ["src/main/java", "${protobuf.generatedFilesBaseDir}/main/java", "${protobuf.generatedFilesBaseDir}/main/grpc"]
+            srcDirs = ["src/main/java", "${protobuf.generatedFilesBaseDir}/proto/main/java", "${protobuf.generatedFilesBaseDir}/proto/main/grpc"]
 
             outputDir = file(project.buildDir.absolutePath + "/classes")
         }
@@ -178,7 +178,7 @@ sourceSets {
 }
 
 
-//delombok.enabled = false
+delombok.enabled = false
 
 
 /**
@@ -234,7 +234,7 @@ jar {
         attributes "Manifest-Version": "1.0"
         attributes "Copyright": "Databases and Information Systems Group, Department Mathematics and Computer Science, University of Basel, Switzerland"
         attributes "Version": "$version"
-        attributes 'Main-Class': 'ch.unibas.dmi.dbis.polyphenydb.client.main.Main'
+        attributes "Main-Class": "org.polypheny.client.main.Main"
     }
 }
 task sourcesJar(type: Jar, dependsOn: classes) {

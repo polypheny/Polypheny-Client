@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option java_package = "ch.unibas.dmi.dbis.polyphenydb.client.grpc";
+option java_package = "org.polypheny.client.grpc";
 
 option java_outer_classname = "PolyClientGRPC";
 

@@ -6,7 +6,7 @@
             <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
         </Console>
         <File name="File"
-            fileName="logs/polyphenydb-client-${date:YYYY-MM-dd-HH-mm}.log">
+            fileName="logs/polypheny-client-${date:YYYY-MM-dd-HH-mm}.log">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %level %C{1} - %msg%n"/>
         </File>
     </Appenders>
@@ -23,7 +23,7 @@
             <AppenderRef ref="Console"/>
             <AppenderRef ref="File"/>
         </logger>
-        <logger name="ch.unibas.dmi.dbis.polyphenydb" level="ERROR">
+        <logger name="org.polypheny" level="ERROR">
         </logger>
         <logger name="ch.unibas.dmi.dbis.chronos" level="INFO">
         </logger>
