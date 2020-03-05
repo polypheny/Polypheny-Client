@@ -43,7 +43,7 @@ public class PolyphenyDbJdbcConnector implements DBConnector {
         props.setProperty( "user", user );
         props.setProperty( "password", password );
         //props.setProperty( "ssl", sslEnabled );
-        props.setProperty( "wire_protocol", "PROTO3" );
+        props.setProperty( "serialization", "PROTOBUF" );
         conn = null;
         try {
             conn = DriverManager.getConnection( url, props );
