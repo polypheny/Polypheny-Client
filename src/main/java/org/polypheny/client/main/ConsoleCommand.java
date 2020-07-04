@@ -104,11 +104,9 @@ public class ConsoleCommand extends AbstractCommand {
 
         final Properties connectionProperties = new Properties();
         connectionProperties.setProperty( "user", "pa" );
-        connectionProperties.setProperty( "wire_protocol", "PROTO3" );
+        connectionProperties.setProperty( "serialization", "PROTOBUF" );
         //connectionProperties.setProperty( "password", "" );
-        //final String url = "jdbc:polypheny://" + hostname + "/";+
-        //final String url = "jdbc:avatica:remote:url=http://localhost:20591;serialization=protobuf";
-        final String url = "jdbc:polypheny://localhost:20591";
+        final String url = "jdbc:polypheny:http://localhost:20591";
         try ( final Connection connection = DriverManager.getConnection( url, connectionProperties ) ) {
 
             try ( final Statement statement = connection.createStatement() ) {
@@ -123,6 +121,10 @@ public class ConsoleCommand extends AbstractCommand {
                         writer.print( "> " );
                         writer.flush();
                         continue;
+                    }
+
+                    if ( line.endsWith( ";" ) ) {
+                        line = line.substring( 0, line.length() - 1 );
                     }
 
                     stopWatch.start();
