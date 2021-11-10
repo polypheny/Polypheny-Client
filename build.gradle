@@ -11,7 +11,6 @@ version = versionMajor + "." + versionMinor + versionQualifier
 buildscript {
     repositories {
         mavenCentral()
-        jcenter()
         maven {
             url "https://plugins.gradle.org/m2/"
         }
@@ -28,7 +27,7 @@ buildscript {
 
 
 repositories {
-    mavenLocal()
+    mavenCentral()
     maven {
         // DBIS Nexus
         url "https://dbis-nexus.dmi.unibas.ch/repository/maven2/"
@@ -39,8 +38,6 @@ repositories {
     flatDir {
         dirs "libs"
     }
-    mavenCentral()
-    jcenter()
 }
 
 
@@ -76,7 +73,7 @@ dependencies {
     //compile name: "voltdbclient-6.6.4"
 
     ////// CHRONOS
-    compile group: "ch.unibas.dmi.dbis.chronos", name: "chronos-agent", version: "2.2.0"
+    implementation group: 'org.chronos-eaas', name: 'chronos-agent', version: '2.3.3'
 
     ////// JDBC
     //runtime files("libs/postgresql-42.0.0.jar")
