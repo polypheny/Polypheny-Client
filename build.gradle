@@ -29,10 +29,6 @@ buildscript {
 repositories {
     mavenCentral()
     maven {
-        // DBIS Nexus
-        url "https://dbis-nexus.dmi.unibas.ch/repository/maven2/"
-    }
-    maven {
         url "https://clojars.org/repo/"
     }
     flatDir {
@@ -77,7 +73,7 @@ dependencies {
 
     ////// JDBC
     //runtime files("libs/postgresql-42.0.0.jar")
-    compile (group: 'org.polypheny', name: 'polypheny-jdbc-driver', version: '1.5'){exclude group: "com.google.protobuf"}
+    compile (group: 'org.polypheny', name: 'polypheny-jdbc-driver', version: '1.5.1'){exclude group: "com.google.protobuf"}
 
     compile group: "org.mariadb.jdbc", name: "mariadb-java-client", version: "1.8.0"
     compile group: "monetdb", name: "monetdb-jdbc", version: "2.28"
@@ -228,8 +224,10 @@ javadoc {
 jar {
     manifest {
         attributes "Manifest-Version": "1.0"
-        attributes "Copyright": "Databases and Information Systems Group, Department Mathematics and Computer Science, University of Basel, Switzerland"
-        attributes "Version": "$version"
+        attributes "Copyright": "The Polypheny Project"
+        attributes 'Group': project.group
+        attributes 'Name': project.name
+        attributes 'Version': project.version
         attributes "Main-Class": "org.polypheny.client.main.Main"
         attributes "Multi-Release": "true"
     }
