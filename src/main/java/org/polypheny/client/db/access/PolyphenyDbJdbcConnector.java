@@ -32,7 +32,7 @@ public class PolyphenyDbJdbcConnector implements DBConnector {
      */
     public PolyphenyDbJdbcConnector( String dbHost, int port, String dbName, String user, String password, String sslEnabled ) throws ConnectionException {
         try {
-            Class.forName( "org.polypheny.jdbc.Driver" );
+            Class.forName( "org.polypheny.jdbc.PolyphenyDriver" );
         } catch ( ClassNotFoundException e ) {
             logger.error( "Polypheny-DB Driver not found", e );
         }
@@ -40,7 +40,7 @@ public class PolyphenyDbJdbcConnector implements DBConnector {
         logger.debug( "Connecting to database @ {}", url );
 
         Properties props = new Properties();
-        props.setProperty( "user", user );
+        props.setProperty( "username", user );
         props.setProperty( "password", password );
         //props.setProperty( "ssl", sslEnabled );
         props.setProperty( "serialization", "PROTOBUF" );

@@ -92,7 +92,7 @@ public class ConsoleCommand extends AbstractCommand {
         }
 
         try {
-            Class.forName( "org.polypheny.jdbc.Driver" );
+            Class.forName( "org.polypheny.jdbc.PolyphenyDriver" );
             //Class.forName( "org.apache.calcite.avatica.remote.Driver" );
         } catch ( ClassNotFoundException e ) {
             if ( log.isErrorEnabled() ) {
@@ -105,8 +105,8 @@ public class ConsoleCommand extends AbstractCommand {
         final Properties connectionProperties = new Properties();
         connectionProperties.setProperty( "user", "pa" );
         connectionProperties.setProperty( "serialization", "PROTOBUF" );
-        //connectionProperties.setProperty( "password", "" );
-        final String url = "jdbc:polypheny:http://localhost:20591";
+        connectionProperties.setProperty( "password", "" );
+        final String url = "jdbc:polypheny://localhost:20590";
         try ( final Connection connection = DriverManager.getConnection( url, connectionProperties ) ) {
 
             try ( final Statement statement = connection.createStatement() ) {
@@ -288,6 +288,7 @@ public class ConsoleCommand extends AbstractCommand {
                 }
             }
         } catch ( Throwable t ) {
+            System.out.println(t);
             if ( log.isErrorEnabled() ) {
                 log.error( "Uncaught Throwable.", t );
             }
