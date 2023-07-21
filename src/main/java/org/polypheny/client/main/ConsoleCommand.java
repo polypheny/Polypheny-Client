@@ -105,10 +105,9 @@ public class ConsoleCommand extends AbstractCommand {
         final Properties connectionProperties = new Properties();
         connectionProperties.setProperty( "user", "pa" );
         connectionProperties.setProperty( "serialization", "PROTOBUF" );
-        //connectionProperties.setProperty( "password", "" );
         final String url = "jdbc:polypheny:http://localhost:20591";
         try ( final Connection connection = DriverManager.getConnection( url, connectionProperties ) ) {
-
+            connection.setAutoCommit( false );
             try ( final Statement statement = connection.createStatement() ) {
 
                 String line = "";
